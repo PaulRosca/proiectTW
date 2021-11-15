@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Tag } from "../Tag/Tag.component";
-import { getShortContent, getCorrectFormOfNounBasedOnValue } from "./PostThumbnail.bl";
+import { getShortContent, getCorrectFormOfNounBasedOnValue, getTimeSince } from "./PostThumbnail.bl";
 import { Container, PostContent, PostDetails, Title, Content, Tags, PostStats, StatValue, StatName, Stat, Time, Username } from "./PostThumbnail.styled";
 
 export const PostThumbnail = ({post}) => {
@@ -29,7 +29,7 @@ export const PostThumbnail = ({post}) => {
                     <StatName>{getCorrectFormOfNounBasedOnValue("vote", stats.likes - stats.dislikes)}</StatName>
                     </Stat>
                 </PostStats>
-                <Time>Asked 5 mins ago</Time>
+                <Time>Asked {getTimeSince(timestamp)} ago</Time>
                 <Username>{createdBy.username}</Username>
                 <Icon icon="bx:bx-user" style={{"fontSize": "3rem", "alignSelf":"center", "flex": "1"}}></Icon>
             </PostDetails>
