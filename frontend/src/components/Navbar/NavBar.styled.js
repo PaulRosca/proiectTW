@@ -35,7 +35,7 @@ export const NavBarLink = styled.p`
   justify-content: left;
   border-radius: 8px;
   padding: 0.5rem 1rem;
-
+  text-decoration: ${(props) => props.isActive ? `underline`: `none`};
   transition: 0.8s ease;
   &:hover {
     transform: scale(1.1);
@@ -62,6 +62,7 @@ export const AskLink = styled.p`
   border-radius: 8px;
   padding: 0.5rem 1rem;
   transition: 0.8s ease;
+  text-decoration: ${(props) => props.isActive ? `underline`: `none`};
   &:hover {
     transform: scale(1.1);
   }

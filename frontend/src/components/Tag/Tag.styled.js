@@ -14,3 +14,15 @@ export const TagButton = styled.button`
     margin-right: 1rem;
     font-weight: 600;
 `;
+
+export const TagList = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    margin: 1rem 0;
+    overflow-x: scroll;
+    --ms-overflow-style: none;
+    scrollbar-width: none; /* makes scrollbar dissapear in firefox */
+    &::-webkit-scrollbar{
+         display: none;
+    }
+`;

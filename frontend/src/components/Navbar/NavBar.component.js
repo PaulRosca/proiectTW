@@ -52,7 +52,7 @@ export const NavBar = () => {
           </NavLink>
         </NavBarLink>
         {isConnected && (
-          <AskLink>
+          <AskLink isActive={isActive.ask}>
             <Icon
               icon="wpf:ask-question"
               style={{ color: "white", width: "2rem", height: "2rem" }}

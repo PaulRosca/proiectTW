@@ -5,6 +5,7 @@ import { Ask } from "./pages/Ask.page";
 import { Profile } from "./pages/Profile.page";
 import { Login } from "./pages/Login.page";
 import { Singup } from "./pages/Signup.page";
+import { Post } from "./pages/Post.page";
 
 export default function App() {
   return (
@@ -24,6 +25,9 @@ export default function App() {
         </Route>
         <Route path="/signup">
           <Singup />
+        </Route>
+        <Route path="/post/:id">
+          <Post />
         </Route>
         <Route path="/">
           <Home />

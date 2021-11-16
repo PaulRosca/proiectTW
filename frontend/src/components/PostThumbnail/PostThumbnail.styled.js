@@ -6,6 +6,10 @@ export const Container = styled.div`
     margin: 1rem 2rem;
     height: 15rem;
     border-radius: 8px;
+    transition: background-color .5s;
+    &:hover{
+        background-color: #2C3035;
+    }
 `;
 
 export const PostContent = styled.div`
@@ -28,6 +32,10 @@ export const Title = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    &:hover{
+        text-decoration: underline;
+        cursor: pointer;
+    }
 `;
 
 export const Content = styled.p`
@@ -80,3 +88,7 @@ export const Username = styled.p`
     font-size: .8rem;
     align-self: center;
 `;
+
+export const TagPlace = styled.div`
+    margin: 0 1rem;
+`
