@@ -17,7 +17,7 @@ export const PostContent = styled.div`
     border-right: 1px solid white;
     display: flex;
     flex-direction: column;
-    width: 60rem;
+    width: 65rem;
 `;
 
 export const PostDetails = styled.div`

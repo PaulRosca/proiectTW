@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const NavBarContainer = styled.div`
   height: inherit;
-  width: 20rem;
+  width: 15rem;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -26,9 +26,9 @@ export const NavBarBottom = styled.div`
 `;
 
 export const NavBarLink = styled.p`
-  width: 12rem;
+  width: 10rem;
   background-color: ${(props) => (props.isActive ? `#202327` : `inherit`)};
-  font-size: 2rem;
+  font-size: 1rem;
   margin: 1rem 0;
   display: flex;
   align-items: center;
@@ -45,16 +45,16 @@ export const NavBarLink = styled.p`
 
 export const NavBarTitle = styled.p`
   align-self: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   white-space: nowrap;
   padding: 2rem 0;
   font-weight: 600;
 `;
 
 export const AskLink = styled.p`
-  width: 12rem;
+  width: 10rem;
   background-color: #52b788;
-  font-size: 2rem;
+  font-size: 1.2rem;
   margin: 1rem 0;
   display: flex;
   align-items: center;

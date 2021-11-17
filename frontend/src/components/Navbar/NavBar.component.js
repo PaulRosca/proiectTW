@@ -30,7 +30,7 @@ export const NavBar = () => {
         <NavBarLink isActive={isActive.home}>
           <Icon
             icon="ant-design:home-outlined"
-            style={{ color: "white", width: "2rem", height: "2rem" }}
+            style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
           ></Icon>
           <NavLink
             to="/"
@@ -42,7 +42,7 @@ export const NavBar = () => {
         <NavBarLink isActive={isActive.tags}>
           <Icon
             icon="akar-icons:tag"
-            style={{ color: "white", width: "2rem", height: "2rem" }}
+            style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
           ></Icon>
           <NavLink
             to="/tags"
@@ -55,7 +55,7 @@ export const NavBar = () => {
           <AskLink isActive={isActive.ask}>
             <Icon
               icon="wpf:ask-question"
-              style={{ color: "white", width: "2rem", height: "2rem" }}
+              style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
             ></Icon>
             <NavLink
               to="/ask"
@@ -72,7 +72,7 @@ export const NavBar = () => {
           <NavBarLink isActive={isActive.profile}>
             <Icon
               icon="healthicons:ui-user-profile"
-              style={{ color: "white" }}
+              style={{ color: "white",width: "1.2rem", height: "1.2rem" }}
             ></Icon>
             <NavLink
               to="/profile/123"
