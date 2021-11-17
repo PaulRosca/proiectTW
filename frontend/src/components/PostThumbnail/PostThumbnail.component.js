@@ -2,9 +2,10 @@ import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import { Tag } from "../Tag/Tag.component";
 import { TagList } from "../Tag/Tag.styled";
-import { getShortContent, getTimeSince } from "./PostThumbnail.bl";
-import { Container, PostContent, PostDetails, Title, Content, PostStats, Time, Username, TagPlace } from "./PostThumbnail.styled";
+import { getShortContent } from "./PostThumbnail.bl";
+import { Container, PostContent, PostDetails, Title, Content, PostStats, TagPlace } from "./PostThumbnail.styled";
 import { Stat } from "../Stat/Stat.component";
+import { Details } from "../Details/Details.component";
 
 export const PostThumbnail = ({post}) => {
     const {id, title, content, tags, createdBy, stats, timestamp} = post;
@@ -27,9 +28,7 @@ export const PostThumbnail = ({post}) => {
                     <Stat value={stats.answers} string={`answer`}/>
                     <Stat value={stats.likes - stats.dislikes} string={"vote"}/>
                 </PostStats>
-                <Time>Asked {getTimeSince(timestamp)} ago</Time>
-                <Username>{createdBy.username}</Username>
-                <Icon icon="bx:bx-user" style={{"fontSize": "3rem", "alignSelf":"center", "flex": "1"}}></Icon>
+                <Details timestamp={timestamp} createdBy={createdBy} />
             </PostDetails>
             
         </Container>

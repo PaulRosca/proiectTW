@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const PostContainer = styled.div`
     display: flex;
-    
-    border-bottom: 1px solid white;
+    margin: 0 1rem;
+    background-color: #202327;
+    border-radius: 4px;
 `;
 
 export const PostContent = styled.div`

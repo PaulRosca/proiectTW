@@ -77,18 +77,6 @@ export const StatValue = styled.p`
 export const StatName = styled.p`
 `;
 
-export const Time = styled.p`
-    color: #AAAAAA;
-    align-self: center;
-    font-size: .8rem;
-`;
-
-export const Username = styled.p`
-    color: #536471;
-    font-size: .8rem;
-    align-self: center;
-`;
-
 export const TagPlace = styled.div`
     margin: 0 1rem;
 `

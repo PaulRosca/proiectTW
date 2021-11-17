@@ -2,9 +2,7 @@ import { PostContainer, PostContent, PostHeader, Title, PostDetails, FullContent
 import { ReactToPost } from "../ReactToPost/ReactToPost.component";
 import { Tag } from "../Tag/Tag.component";
 import { TagList } from "../Tag/Tag.styled";
-import { Time, Username } from "../PostThumbnail/PostThumbnail.styled";
-import { Icon } from "@iconify/react";
-import { getTimeSince } from "../PostThumbnail/PostThumbnail.bl";
+import { Details } from "../Details/Details.component";
 
 export const FullPost = ({post}) => {
     const {id, title, content, tags, createdBy, stats, timestamp} = post;
@@ -21,9 +19,7 @@ export const FullPost = ({post}) => {
             </TagList>
             </PostContent>
             <PostDetails>
-                <Time>Asked {getTimeSince(timestamp)} ago</Time>
-                <Username>{createdBy.username}</Username>
-                <Icon icon="bx:bx-user" style={{"fontSize": "3rem", margin: "1rem 0"}}></Icon>
+                <Details timestamp={timestamp} createdBy={createdBy}/>
             </PostDetails>
         </PostContainer>
     )

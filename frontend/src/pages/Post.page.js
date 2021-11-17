@@ -21,8 +21,8 @@ const post = {
     "dislikes": 14
   },
   "timestamp": new Date(1636654483618),
-  "comments":[{"content": "Yblablablablablablablablabldagsadgashsahsahdsaaaaaaaaaaaaaaaaaaaaaaaasdhashashsahashadgaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "createdBy":"Scott Walton", "timestamp": new Date(1636654683618), "likes": 2, "dislikes": 0},
-              {"content": "Yes its a comment as well", "createdBy":"Scott Walton", "timestamp": new Date(1636658683618), "likes": 2, "dislikes": 4}    
+  "comments":[{"content": "Yblablablablablablablablabldagsadgashsahsahdsaaaaaaaaaaaaaaaaaaaaaaaasdhashashsahashadgaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "createdBy":{"username" : "Scott Walton"}, "timestamp": new Date(1636654683618), "likes": 2, "dislikes": 0},
+              {"content": "Yes its a comment as well", "createdBy":{"username" : "Scott Walton"}, "timestamp": new Date(1636658683618), "likes": 2, "dislikes": 4}    
   ]
 }
 

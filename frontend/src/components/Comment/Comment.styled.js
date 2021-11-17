@@ -1,18 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    border-radius: 4px;
     display: flex;
-    margin-bottom: 1rem;
+    background-color: #202327;
+    margin: 0 1rem 1rem 1rem;
 `;
 
 export const Content = styled.p`
-    flex: 1;
+    
     padding: 1rem 2rem;
-    width: 60rem;
     word-break: break-all;
-    border-right: 1px solid white;
     color: #aaaaaa;
 `;
 
@@ -23,4 +21,13 @@ export const CommentDetails = styled.div`
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
+`;
+
+export const ContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid white;
+    padding-bottom: 1rem;
+    flex: 1;
+    width: 60rem;
 `;
