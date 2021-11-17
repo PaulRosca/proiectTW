@@ -7,7 +7,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.p`
-    font-size: 2rem;
+    font-size: 1.2rem;
     padding: 0 2rem;
     font-weight: 600;
     min-width: 10rem;

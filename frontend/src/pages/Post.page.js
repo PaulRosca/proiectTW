@@ -33,7 +33,7 @@ export const Post = () => {
             <NavBar />
             <ContentContainer>
                 <Header title="Post">
-                <Icon icon="akar-icons:arrow-back-thick" style={{"fontSize": "1.5rem", "cursor":"pointer"}} onClick={(e) => history.goBack()}></Icon>
+                <Icon icon="akar-icons:arrow-back-thick" style={{"fontSize": "1.2rem", "cursor":"pointer"}} onClick={(e) => history.goBack()}></Icon>
                 </Header>
                 <FullPost post={post}></FullPost>
                 <CommentSection comments={post.comments} />

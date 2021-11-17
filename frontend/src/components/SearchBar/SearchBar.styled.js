@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     width: 50%;
-    height: 2.5rem;
+    height: 1.2rem;
     border-radius: 8px;
     border: none;
     background-color: #202327;
@@ -12,7 +12,7 @@ export const Container = styled.div`
 `;
 
 export const SearchBarInput = styled.input`
-    font-size: 1.2rem;
+    font-size: 1rem;
     background-color: #202327;
     color: #536471;
     border: none;

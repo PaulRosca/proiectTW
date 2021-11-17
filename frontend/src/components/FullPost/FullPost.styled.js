@@ -14,6 +14,7 @@ export const PostContent = styled.div`
     flex-direction: column;
     padding: 1rem 2rem;
     width: 60rem;
+    font-size: 1rem;
 `;
 
 export const PostHeader = styled.div`
@@ -25,7 +26,7 @@ export const PostHeader = styled.div`
 
 export const Title = styled.p`
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: 500;
     word-break: break-all;
     margin-right: 1rem;
 `;
