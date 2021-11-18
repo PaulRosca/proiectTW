@@ -16,7 +16,15 @@ export const login = async (req, res) => {
     }
     const token = jwt.sign({ id: user._id }, config.get("jwtSecret"));
     res.cookie("token", token, { httpOnly: true });
-    return res.status(200).json({ message: "Login successful", user });
+    return res.status(200).json({
+      message: "Login successful",
+      user: {
+        username: user.username,
+        descritpion: user.descritpion,
+        email: user.email,
+        profilePicture: user.profilePicture,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
