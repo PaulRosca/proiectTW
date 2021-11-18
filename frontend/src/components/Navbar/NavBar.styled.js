@@ -53,7 +53,7 @@ export const NavBarTitle = styled.p`
 
 export const AskLink = styled.p`
   width: 10rem;
-  background-color: #52b788;
+  background-color: #3A8663;
   font-size: 1.2rem;
   margin: 1rem 0;
   display: flex;
