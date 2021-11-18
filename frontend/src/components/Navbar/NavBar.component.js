@@ -11,17 +11,24 @@ import {
   AskLink,
   LoginLink,
   IconContainer,
-  SignUpText
+  SignUpText,
 } from "./NavBar.styled";
 
 export const NavBar = () => {
   const location = useLocation();
   const [isActive, setIsActive] = useState(getActivePage(location));
-  const [isConnected, setIsConnected] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     setIsActive(getActivePage(location));
   }, [location]);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setIsConnected(true);
+    }
+  }, []);
 
   return (
     <NavBarContainer className="NavBar">
@@ -72,7 +79,7 @@ export const NavBar = () => {
           <NavBarLink isActive={isActive.profile}>
             <Icon
               icon="healthicons:ui-user-profile"
-              style={{ color: "white",width: "1.2rem", height: "1.2rem" }}
+              style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
             ></Icon>
             <NavLink
               to="/profile/123"
