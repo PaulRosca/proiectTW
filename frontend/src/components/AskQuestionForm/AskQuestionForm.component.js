@@ -3,6 +3,7 @@ import { AskTextarea, TitleInput, AddTagDiv, AddTagInput, AddTagContainer, Added
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { Tag } from "../Tag/Tag.component";
+import { TagList } from "../Tag/Tag.styled";
 
 export const AskQuestionForm = () => {
     const [tags, setTags] = useState([]);
@@ -23,13 +24,16 @@ export const AskQuestionForm = () => {
                     <AddTagInput type="text" placeholder="Add your tag here..." value={tagInput} onChange={(e) => setTagInput(e.target.value)}></AddTagInput>
                     <Icon icon="carbon:add" style={{"fontSize": "2rem", "padding": "0 .2rem", "cursor": "pointer"}} onClick={(e) => {setTags([...tags, tagInput]); setTagInput("")}}></Icon>
                 </AddTagDiv>
+                <TagList>
                 {tags.map( (tag, idx) => { return (
                     <AddedTagContainer>
                         <Tag name={tag}/>
                         <Icon icon="carbon:close" style={{"fontSize": "1.5rem", "marginLeft": "-1rem", "marginRight": "1rem"}} onClick={(e) => setTags([...tags.filter((_, i) => i !== idx)])}/>
                     </AddedTagContainer>
                 )})}
+                </TagList>
             </AddTagContainer>
+            
             <PostButton>Post</PostButton>
         </ContainerPd2>
     )

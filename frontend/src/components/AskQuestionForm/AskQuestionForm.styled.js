@@ -7,18 +7,20 @@ export const TitleInput = styled.input`
     border-radius: 4px;
     height: 2rem;
     border-color: rgb(118, 118, 118);
-    width: 50rem;
+    max-width: 50rem;
     margin: .5rem 0 1rem 0;
     padding: 1rem;
+    min-width: 20rem;
 `;
 
 export const AskTextarea = styled.textarea`
-    width: 50rem;
+    max-width: 50rem;
     background-color: black;
     height: 10rem;
     border-radius: 4px;
     padding: .5rem 1rem;
     margin: .5rem 0 1rem 0;
+    min-width: 20rem;
 `;
 
 export const AddTagDiv = styled.div`
@@ -46,6 +48,8 @@ export const AddTagInput = styled.input`
 export const AddTagContainer = styled.div`
     display: flex;
     align-items: center;
+    max-width: 50rem;
+    min-width: 20rem;
 `;
 
 export const AddedTagContainer = styled.div`

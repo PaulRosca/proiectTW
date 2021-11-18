@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    width: 50%;
     height: 1.2rem;
     border-radius: 8px;
     border: none;
@@ -9,6 +8,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 1rem;
+    width: 20rem;
 `;
 
 export const SearchBarInput = styled.input`

@@ -17,7 +17,8 @@ export const PostContent = styled.div`
     border-right: 1px solid white;
     display: flex;
     flex-direction: column;
-    width: 65rem;
+    max-width: 65rem;
+    min-width: 15rem;
 `;
 
 export const PostDetails = styled.div`
@@ -39,11 +40,17 @@ export const Title = styled.div`
 `;
 
 export const Content = styled.p`
-    overflow: hidden;
+    display: block;
     padding: 0 1rem;
     flex: 1;
     word-break: break-all;
     color: #AAAAAA;
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 5; /* number of lines to show */
+           line-clamp: 5; 
+   -webkit-box-orient: vertical;
 `;
 
 export const Tags = styled.div`
