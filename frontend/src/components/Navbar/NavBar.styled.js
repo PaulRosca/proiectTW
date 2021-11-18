@@ -69,9 +69,9 @@ export const AskLink = styled.p`
 `;
 
 export const LoginLink = styled.p`
-  width: 12rem;
+  width: 8rem;
   background-color: #52b788;
-  font-size: 2rem;
+  font-size: 1rem;
   margin: 1rem 0;
   display: flex;
   align-items: center;
@@ -91,6 +91,6 @@ export const IconContainer = styled.span`
 `;
 
 export const SignUpText = styled.p`
-  font-size: 1rem;
+  font-size: .8rem;
   padding-bottom: 1rem;
 `;

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+export const Container = styled.div`
     padding: 2rem 0;
     display: flex;
     width: 100%;
 `;
 
-const Title = styled.p`
+export const Title = styled.p`
     font-size: 1.2rem;
     padding: 0 2rem;
     font-weight: 600;
@@ -20,4 +20,15 @@ export const ChildrenContainer = styled.div`
     flex: 1 1 auto;
     padding: 0 2rem;
 `;
-export { Container, Title };
+
+export const SignOutButton = styled.button`
+    background-color: #B22F2F;
+    color: white;
+    height: 2rem;
+    border-radius: 4px;
+    border:none;
+    padding: 0 2rem;
+    &:hover{
+        cursor: pointer;
+    }
+`;
