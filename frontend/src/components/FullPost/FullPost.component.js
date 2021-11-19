@@ -13,7 +13,6 @@ import { Details } from "../Details/Details.component";
 
 export const FullPost = ({ post, onLike, onDislike }) => {
   const {
-    _id,
     title,
     content,
     tags,
@@ -41,7 +40,7 @@ export const FullPost = ({ post, onLike, onDislike }) => {
         <FullContent>{content}</FullContent>
         <TagList>
           {tags.map((tag) => (
-            <Tag name={tag.content} />
+            <Tag name={tag.content} key={tag._id} />
           ))}
         </TagList>
       </PostContent>

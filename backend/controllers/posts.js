@@ -7,6 +7,7 @@ import CommentLike from "../models/Comment/CommentLikeModel.js";
 import CommentDislike from "../models/Comment/CommentDislikeModel.js";
 import mongoose from "mongoose";
 const postsPageSize = 6;
+const commentsPageSize = 6;
 
 export const createTag = async (req, res) => {
   try {
@@ -26,6 +27,63 @@ export const createPost = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getComments = async (req, res) => {
+  try {
+    const { sorting, commentID } = req.query;
+    const sorting_r = sorting === "asc" ? 1 : -1;
+    let commentID_r = null;
+    try {
+      commentID_r = mongoose.Types.ObjectId(commentID);
+    } catch (err) {}
+
+    const filter = commentID_r
+      ? sorting_r === 1
+        ? { _id: { $gt: commentID_r } }
+        : { _id: { $lt: commentID_r } }
+      : {};
+    filter.post = req.params.id;
+
+    let comments = await Comment.find(filter)
+      .lean()
+      .sort({ _id: sorting_r })
+      .populate("user")
+      .limit(commentsPageSize)
+      .exec();
+    comments = await Promise.all(
+      comments.map(async (comment) => {
+        comment.liked = false;
+        comment.disliked = false;
+        if (req.user) {
+          const userLike = await CommentLike.findOne({
+            comment: comment._id,
+            user: req.user.id,
+          });
+          if (userLike) {
+            comment.liked = true;
+          } else {
+            const userDislike = await CommentDislike.findOne({
+              comment: comment._id,
+              user: req.user.id,
+            });
+            if (userDislike) {
+              comment.disliked = true;
+            }
+          }
+        }
+        return comment;
+      })
+    );
+    const hasComments = comments.length > 0;
+    return res.status(200).json({
+      comments,
+      lastCommentID: hasComments ? comments[comments.length - 1]._id : "same",
+    });
+  } catch (error) {
+    return res.status(404).json({ message: error.message });
+  }
+};
+
 export const getPosts = async (req, res) => {
   const { sorting, postID } = req.query;
   try {
@@ -169,9 +227,11 @@ export const addComment = async (req, res) => {
       post: req.params.id,
       content: req.body.content,
     }).save();
+    const populatedComment = await Comment.populate(comment, { path: "user" });
     await Post.updateOne({ _id: req.params.id }, { $inc: { commentCount: 1 } });
-    return res.status(201).json({ comment });
+    return res.status(201).json({ comment: populatedComment });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
