@@ -8,7 +8,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 1rem;
-    width: 20rem;
+    min-width: 20rem;
 `;
 
 export const SearchBarInput = styled.input`

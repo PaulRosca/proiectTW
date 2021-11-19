@@ -33,6 +33,7 @@ export const AddTagDiv = styled.div`
     border-radius: 4px;
     margin: .5rem 0 1rem 0;
     margin-right: 1rem;
+    
 `;
 
 export const AddTagInput = styled.input`
@@ -43,6 +44,7 @@ export const AddTagInput = styled.input`
     border: none;
     padding: 1rem;
     outline: none;
+    width: 13rem;
 `;
 
 export const AddTagContainer = styled.div`
@@ -50,6 +52,7 @@ export const AddTagContainer = styled.div`
     align-items: center;
     max-width: 50rem;
     min-width: 20rem;
+    width: 50rem;
 `;
 
 export const AddedTagContainer = styled.div`
