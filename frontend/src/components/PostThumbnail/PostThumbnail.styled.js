@@ -6,6 +6,8 @@ export const Container = styled.div`
     margin: 1rem 2rem;
     height: 15rem;
     border-radius: 8px;
+    min-width: 10rem;
+    justify-content: space-between;
     transition: background-color .5s;
     &:hover{
         background-color: #2C3035;
@@ -17,14 +19,18 @@ export const PostContent = styled.div`
     border-right: 1px solid white;
     display: flex;
     flex-direction: column;
-    max-width: 65rem;
-    min-width: 15rem;
+    width: 100%;
+    min-width: 0;
+    flex: 0 1 auto;
+
 `;
 
 export const PostDetails = styled.div`
     display: flex;
     flex-direction: column;
-    flex: 1;
+    min-width: 12rem;
+    width: 12rem;
+    flex: 1 0 auto;
 `;
 
 export const Title = styled.div`
