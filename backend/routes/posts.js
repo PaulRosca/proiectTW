@@ -8,6 +8,7 @@ import {
   getPost,
   likeComment,
   likePost,
+  getPosts
 } from "../controllers/posts.js";
 import { auth, extractUser } from "../middleware/auth.js";
 const router = express.Router();
@@ -20,5 +21,6 @@ router.post("/dislikePost/:id", auth, dislikePost);
 router.post("/addComment/:id", auth, addComment);
 router.post("/likeComment/:id", auth, likeComment);
 router.post("/dislikeComment/:id", auth, dislikeComment);
+router.get("/getPosts", getPosts);
 
 export default router;
