@@ -9,65 +9,92 @@ import { AddComment } from "../components/AddComment/AddComment.component";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const post = {
-  id: 2,
-  title:
-    "Yoyoyoyoyo?YoyoyoyoyoYoyoyoyoyoYoyoyoyoyoYoyoyoyoyoYoyoyoyoyoYoyoyoyoyoYoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?Yoyoyoyoyo?",
-  content:
-    "I aasdgashassssssssssssssssssssssssssshsahasdhasadassgaashsahsahsaIaasdgashassssssssssssssssssssssssssshsahasdhasadassgaashsahsahsaI aasdgashassssssssssssssssssssssssssshsahasdhasadassgaashsahsahsasdgashashdashdas I also tried to do this but it happened that blabla so i tried this and then tried this and tried this and this I also tried to do this but it happened that blabla so i tried this and then tried this and tried this and this I also tried to do this but it happened that blabla so i tried this and then tried this and tried this and this",
-  tags: [
-    "JavaScript",
-    "Binary tree",
-    "ASD",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-    "Tag1",
-  ],
-  createdBy: {
-    username: "Jimmy Jones",
-  },
-  stats: {
-    views: 2,
-    answers: 0,
-    likes: 18,
-    dislikes: 14,
-  },
-  timestamp: new Date(1636654483618),
-  comments: [
-    {
-      content:
-        "Yblablablablablablablablabldagsadgashsahsahdsaaaaaaaaaaaaaaaaaaaaaaaasdhashashsahashadgaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      createdBy: { username: "Scott Walton" },
-      timestamp: new Date(1636654683618),
-      likes: 2,
-      dislikes: 0,
-    },
-    {
-      content: "Yes its a comment as well",
-      createdBy: { username: "Scott Walton" },
-      timestamp: new Date(1636658683618),
-      likes: 2,
-      dislikes: 4,
-    },
-  ],
-};
-
 export const Post = (props) => {
   const [postState, setPostState] = useState({
     post: {},
     loading: true,
     error: false,
   });
+  const [commentsState, setCommentsState] = useState({
+    comments: [],
+    loading: true,
+    error: false,
+    lastCommentID: undefined,
+  });
+
+  const likeComment = (commentID) => {
+    axios
+      .post(
+        `http://localhost:9000/posts/likeComment/${commentID}`,
+        {},
+        { withCredentials: true }
+      )
+      .then(({ data }) => {
+        console.log(data);
+        setCommentsState((state) => {
+          return {
+            ...state,
+            comments: state.comments.map((comment) => {
+              if (comment._id === commentID) {
+                const updatedComment = {
+                  ...comment,
+                  likeCount: comment.liked
+                    ? comment.likeCount - 1
+                    : comment.likeCount + 1,
+                  dislikeCount: comment.disliked
+                    ? comment.dislikeCount - 1
+                    : comment.dislikeCount,
+                  liked: !comment.liked,
+                  disliked: false,
+                };
+                return updatedComment;
+              }
+              return comment;
+            }),
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const dislikeComment = (commentID) => {
+    axios
+      .post(
+        `http://localhost:9000/posts/dislikeComment/${commentID}`,
+        {},
+        { withCredentials: true }
+      )
+      .then(({ data }) => {
+        console.log(data);
+        setCommentsState((state) => {
+          return {
+            ...state,
+            comments: state.comments.map((comment) => {
+              if (comment._id === commentID) {
+                const updatedComment = {
+                  ...comment,
+                  dislikeCount: comment.disliked
+                    ? comment.dislikeCount - 1
+                    : comment.dislikeCount + 1,
+                  likeCount: comment.liked
+                    ? comment.likeCount - 1
+                    : comment.likeCount,
+                  disliked: !comment.disliked,
+                  liked: false,
+                };
+                return updatedComment;
+              }
+              return comment;
+            }),
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const likePost = () => {
     const id = props.match.params.id;
@@ -86,6 +113,9 @@ export const Post = (props) => {
               likeCount: state.post.liked
                 ? state.post.likeCount - 1
                 : state.post.likeCount + 1,
+              dislikeCount: state.post.disliked
+                ? state.post.dislikeCount - 1
+                : state.post.dislikeCount,
               disliked: false,
               liked: !state.post.liked,
             },
@@ -114,6 +144,9 @@ export const Post = (props) => {
               dislikeCount: state.post.disliked
                 ? state.post.dislikeCount - 1
                 : state.post.dislikeCount + 1,
+              likeCount: state.post.liked
+                ? state.post.likeCount - 1
+                : state.post.likeCount,
               liked: false,
               disliked: !state.post.disliked,
             },
@@ -126,6 +159,46 @@ export const Post = (props) => {
   };
 
   const history = useHistory();
+  const getComments = () => {
+    if (commentsState.lastCommentID !== "same") {
+      const id = props.match.params.id;
+      setCommentsState((state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      });
+
+      axios
+        .get(
+          `http://localhost:9000/posts/getPost/${id}/comments?commentID=${commentsState.lastCommentID}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then(({ data }) => {
+          setCommentsState((state) => {
+            return {
+              ...state,
+              loading: false,
+              error: false,
+              comments: [...state.comments, ...data.comments],
+              lastCommentID: data.lastCommentID,
+            };
+          });
+        })
+        .catch(() => {
+          setCommentsState((state) => {
+            return {
+              ...state,
+              loading: false,
+              error: true,
+            };
+          });
+        });
+    }
+  };
+
   const getPost = () => {
     const id = props.match.params.id;
     setPostState((state) => {
@@ -160,11 +233,43 @@ export const Post = (props) => {
   useEffect(() => {
     console.log(props.match.params.id);
     getPost();
+    getComments();
   }, []);
+
+  const handleScroll = (e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      getComments();
+    }
+  };
+
+  const addComment = (content) => {
+    const id = props.match.params.id;
+    axios
+      .post(
+        `http://localhost:9000/posts/addComment/${id}`,
+        { content },
+        { withCredentials: true }
+      )
+      .then(({ data }) => {
+        console.log(data);
+        setCommentsState((state) => {
+          return {
+            ...state,
+            comments: [data.comment, ...state.comments],
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <Container>
       <NavBar />
-      <ContentContainer>
+      <ContentContainer onScroll={handleScroll}>
         <Header title="Post">
           <Icon
             icon="akar-icons:arrow-back-thick"
@@ -183,8 +288,13 @@ export const Post = (props) => {
             ></FullPost>
           )
         )}
-        <AddComment />
-        <CommentSection comments={post.comments} />
+        <AddComment addComment={addComment} />
+        <CommentSection
+          comments={commentsState.comments}
+          likeComment={likeComment}
+          dislikeComment={dislikeComment}
+          loading={commentsState.loading}
+        />
       </ContentContainer>
     </Container>
   );
