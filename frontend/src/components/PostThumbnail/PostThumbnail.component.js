@@ -6,7 +6,7 @@ import { Stat } from "../Stat/Stat.component";
 import { Details } from "../Details/Details.component";
 
 export const PostThumbnail = ({post}) => {
-    const {id, title, content, tags, createdBy, stats, timestamp} = post;
+    const {id, title, content, tags, createdBy, views,likeCount,dislikeCount, createdAt, commentCount} = post;
     return(
         <Container>
             <PostContent>
@@ -16,17 +16,17 @@ export const PostThumbnail = ({post}) => {
                 <Content>{content}</Content>
                 <TagPlace>
                 <TagList>
-                {tags.map(tag => <Tag name={tag}/>)}
+                {tags.map(tag => <Tag name={tag.content}/>)}
                 </TagList>
                 </TagPlace>
             </PostContent>
             <PostDetails>
                 <PostStats>
-                    <Stat value={stats.views} string={`view`} />
-                    <Stat value={stats.answers} string={`answer`}/>
-                    <Stat value={stats.likes - stats.dislikes} string={"vote"}/>
+                    <Stat value={views} string={`view`} />
+                    <Stat value={commentCount} string={`answer`}/>
+                    <Stat value={likeCount - dislikeCount} string={"vote"}/>
                 </PostStats>
-                <Details timestamp={timestamp} createdBy={createdBy} />
+                <Details timestamp={createdAt} createdBy={createdBy} />
             </PostDetails>
             
         </Container>

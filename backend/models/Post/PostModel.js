@@ -17,6 +17,7 @@ const PostSchema = mongoose.Schema(
       ref: "Tag",
       validate: (v) => Array.isArray(v) && v.length > 0,
     },
+    commentCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

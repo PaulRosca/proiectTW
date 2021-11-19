@@ -44,6 +44,7 @@ export const Singup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               label="Email"
+              error={true}
             />
             <FormGroup
               type="text"

@@ -5,7 +5,7 @@ import { getTimeSince } from "./Details.bl";
 export const Details = ({ timestamp, createdBy }) => {
     return (
         <Container>
-            <Time>Asked {getTimeSince(timestamp)} ago</Time>
+            <Time>Asked {getTimeSince(new Date(timestamp))} ago</Time>
             <Username>{createdBy.username}</Username>
             <Icon icon="bx:bx-user" style={{"fontSize": "3rem", "alignSelf":"center"}}></Icon>
         </Container>

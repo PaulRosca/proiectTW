@@ -4,7 +4,9 @@ import PostLike from "../models/Post/PostLikeModel.js";
 import PostDislike from "../models/Post/PostDislikeModel.js";
 import Comment from "../models/Comment/CommentModel.js";
 import CommentLike from "../models/Comment/CommentLikeModel.js";
-import CommentDislike from "../models/Comment/CommentDislikeModel.js"
+import CommentDislike from "../models/Comment/CommentDislikeModel.js";
+import mongoose from "mongoose";
+const postsPageSize = 6;
 
 export const createTag = async (req, res) => {
   try {
@@ -24,7 +26,35 @@ export const createPost = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+export const getPosts = async (req, res) => {
+  const { sorting, postID } = req.query;
+  try {
+    const sorting_r = sorting === "asc" ? 1 : -1;
+    let postID_r = null;
+    try {
+      postID_r = mongoose.Types.ObjectId(postID);
+    } catch (err) {}
 
+    const filter = postID_r
+      ? sorting_r === 1
+        ? { _id: { $gt: postID_r } }
+        : { _id: { $lt: postID_r } }
+      : {};
+    const posts = await Post.find(filter)
+      .sort({ _id: sorting_r })
+      .populate("createdBy")
+      .populate("tags")
+      .limit(postsPageSize)
+      .exec();
+    const hasPosts = posts.length > 0;
+    return res.status(200).json({
+      posts,
+      lastPostID: hasPosts ? posts[posts.length - 1]._id : "same",
+    });
+  } catch (error) {
+    return res.status(404).json({ message: error.message });
+  }
+};
 export const getPost = async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate(req.params.id, {
@@ -115,7 +145,7 @@ export const dislikePost = async (req, res) => {
       user: req.user.id,
     });
     if (userLike) {
-     await removePostLike(userLike);
+      await removePostLike(userLike);
     }
     if (userDislike) {
       await removePostDislike(userDislike);
@@ -138,6 +168,7 @@ export const addComment = async (req, res) => {
       post: req.params.id,
       content: req.body.content,
     }).save();
+    await Post.updateOne({ _id: req.params.id }, { $inc: { commentCount: 1 } });
     return res.status(201).json({ comment });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -150,7 +181,10 @@ const addCommentLike = async (comment, user) => {
 };
 const removeCommentLike = async (commentLike) => {
   await CommentLike.findByIdAndDelete(commentLike._id);
-  await Comment.updateOne({ _id: commentLike.comment }, { $inc: { likeCount: -1 } });
+  await Comment.updateOne(
+    { _id: commentLike.comment },
+    { $inc: { likeCount: -1 } }
+  );
 };
 const addCommentDislike = async (comment, user) => {
   await CommentDislike({ comment, user }).save();
@@ -179,7 +213,9 @@ export const likeComment = async (req, res) => {
     }
     if (userLike) {
       await removeCommentLike(userLike);
-      return res.status(200).json({ success: true, message: "Unliked comment!" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Unliked comment!" });
     } else {
       await addCommentLike(req.params.id, req.user.id);
       return res.status(200).json({ success: true, message: "Liked comment!" });
@@ -200,7 +236,7 @@ export const dislikeComment = async (req, res) => {
       user: req.user.id,
     });
     if (userLike) {
-     await removeCommentLike(userLike);
+      await removeCommentLike(userLike);
     }
     if (userDislike) {
       await removeCommentDislike(userDislike);
@@ -209,7 +245,9 @@ export const dislikeComment = async (req, res) => {
         .json({ success: true, message: "Undisliked comment!" });
     } else {
       await addCommentDislike(req.params.id, req.user.id);
-      return res.status(200).json({ success: true, message: "Disliked comment!" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Disliked comment!" });
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
