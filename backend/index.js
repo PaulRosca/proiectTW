@@ -13,7 +13,12 @@ const limiter = rateLimit({
   max: 100,
 });
 
-server.use(cors());
+server.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 server.use(cookieParser());
 server.use(limiter);
 server.use(helmet());

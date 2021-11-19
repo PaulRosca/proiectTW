@@ -62,6 +62,7 @@ export const getPost = async (req, res) => {
     })
       .lean()
       .populate("tags")
+      .populate("createdBy")
       .exec();
     post.liked = false;
     post.disliked = false;

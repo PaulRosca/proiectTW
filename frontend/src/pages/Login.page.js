@@ -13,10 +13,14 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:9000/user/login", {
-        email,
-        password,
-      })
+      .post(
+        "http://localhost:9000/user/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
       .then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data.user));
         history.push("/");

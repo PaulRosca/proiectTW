@@ -15,6 +15,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials!" });
     }
     const token = jwt.sign({ id: user._id }, config.get("jwtSecret"));
+    res.clearCookie("token");
     res.cookie("token", token, { httpOnly: true });
     return res.status(200).json({
       message: "Login successful",
@@ -36,6 +37,7 @@ export const register = async (req, res) => {
   try {
     user = await new User(userData).save();
     const token = jwt.sign({ id: user._id }, config.get("jwtSecret"));
+    res.clearCookie("token");
     res.cookie("token", token, { httpOnly: true });
     return res.status(201).json({ message: "Register successful", user });
   } catch (error) {

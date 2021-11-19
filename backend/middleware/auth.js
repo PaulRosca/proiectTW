@@ -24,6 +24,7 @@ export const extractUser = (req, res, next) => {
   if (!token) {
     return next();
   }
+  
   try {
     const decoded = jwt.verify(token, config.get("jwtSecret"));
     if (!decoded) {

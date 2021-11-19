@@ -26,9 +26,7 @@ export default function App() {
         <Route path="/signup">
           <Singup />
         </Route>
-        <Route path="/post/:id">
-          <Post />
-        </Route>
+        <Route path="/post/:id" component={Post} />
         <Route path="/">
           <Home />
         </Route>

@@ -6,12 +6,12 @@ import { Stat } from "../Stat/Stat.component";
 import { Details } from "../Details/Details.component";
 
 export const PostThumbnail = ({post}) => {
-    const {id, title, content, tags, createdBy, views,likeCount,dislikeCount, createdAt, commentCount} = post;
+    const {_id, title, content, tags, createdBy, views,likeCount,dislikeCount, createdAt, commentCount} = post;
     return(
         <Container>
             <PostContent>
                 <Title>
-                    <NavLink to={`/post/${id}`} style={{"textDecoration": "none"}}>{title}</NavLink>
+                    <NavLink to={`/post/${_id}`} style={{"textDecoration": "none"}}>{title}</NavLink>
                 </Title>
                 <Content>{content}</Content>
                 <TagPlace>

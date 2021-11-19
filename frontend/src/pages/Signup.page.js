@@ -15,11 +15,15 @@ export const Singup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:9000/user/register", {
-        username,
-        email,
-        password,
-      })
+      .post(
+        "http://localhost:9000/user/register",
+        {
+          username,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
       .then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data.user));
         history.push("/");
