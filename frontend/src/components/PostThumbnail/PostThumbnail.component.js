@@ -1,8 +1,6 @@
-import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import { Tag } from "../Tag/Tag.component";
 import { TagList } from "../Tag/Tag.styled";
-import { getShortContent } from "./PostThumbnail.bl";
 import { Container, PostContent, PostDetails, Title, Content, PostStats, TagPlace } from "./PostThumbnail.styled";
 import { Stat } from "../Stat/Stat.component";
 import { Details } from "../Details/Details.component";
@@ -15,7 +13,7 @@ export const PostThumbnail = ({post}) => {
                 <Title>
                     <NavLink to={`/post/${id}`} style={{"textDecoration": "none"}}>{title}</NavLink>
                 </Title>
-                <Content>{getShortContent(content, 490)}</Content>
+                <Content>{content}</Content>
                 <TagPlace>
                 <TagList>
                 {tags.map(tag => <Tag name={tag.content}/>)}

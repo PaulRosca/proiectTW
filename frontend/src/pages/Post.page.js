@@ -5,6 +5,7 @@ import { NavBar } from "../components/Navbar/NavBar.component"
 import { Container, ContentContainer } from "../styles/Global.style"
 import { FullPost } from "../components/FullPost/FullPost.component"
 import { CommentSection } from "../components/CommentSection/CommentSection.component"
+import { AddComment } from "../components/AddComment/AddComment.component"
 
 const post = {
   "id": 2,
@@ -36,6 +37,7 @@ export const Post = () => {
                 <Icon icon="akar-icons:arrow-back-thick" style={{"fontSize": "1.2rem", "cursor":"pointer"}} onClick={(e) => history.goBack()}></Icon>
                 </Header>
                 <FullPost post={post}></FullPost>
+                <AddComment />
                 <CommentSection comments={post.comments} />
             </ContentContainer>
         </Container>

@@ -8,7 +8,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.p`
-    
+    font-size: .875rem;
     padding: 1rem 2rem;
     word-break: break-all;
     color: #aaaaaa;
@@ -16,8 +16,8 @@ export const Content = styled.p`
 
 export const CommentDetails = styled.div`
     display: flex;
+    flex: 1;
     flex-direction: column;
-    width: 15rem;
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
@@ -28,6 +28,7 @@ export const ContentContainer = styled.div`
     flex-direction: column;
     border-right: 1px solid white;
     padding-bottom: 1rem;
-    flex: 1;
-    width: 60rem;
+    flex: 5;
+    max-width: 70rem;
+    min-width: 30rem;
 `;

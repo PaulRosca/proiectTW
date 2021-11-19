@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+
+export const DetailedTagGridItem = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 export const TagButton = styled.button`
     display: flex;
     justify-content: center;
@@ -13,6 +19,9 @@ export const TagButton = styled.button`
     border-radius: 4px;
     margin-right: 1rem;
     font-weight: 600;
+    &:hover{
+        cursor: pointer;
+    }
 `;
 
 export const TagList = styled.div`
@@ -25,4 +34,18 @@ export const TagList = styled.div`
     &::-webkit-scrollbar{
          display: none;
     }
+`;
+
+export const Container = styled.div`
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));;
+    grid-gap: 1rem;
+`;
+
+
+export const QuestionsP = styled.p`
+    color: #AAAAAA;
+    font-size: 1rem;
+    margin-top: .5rem;
 `;
