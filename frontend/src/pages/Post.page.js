@@ -8,8 +8,10 @@ import { CommentSection } from "../components/CommentSection/CommentSection.comp
 import { AddComment } from "../components/AddComment/AddComment.component";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export const Post = (props) => {
+  const user = useSelector(state => state.user);
   const [postState, setPostState] = useState({
     post: {},
     loading: true,
@@ -288,7 +290,8 @@ export const Post = (props) => {
             ></FullPost>
           )
         )}
-        <AddComment addComment={addComment} />
+        {user && 
+        <AddComment addComment={addComment} />}
         <CommentSection
           comments={commentsState.comments}
           likeComment={likeComment}

@@ -6,20 +6,19 @@ import { SignOutButton } from "../components/Header/Header.styled";
 import { useHistory } from "react-router-dom";
 import { ProfileCard } from "../components/ProfileCard/ProfileCard.component";
 import { AskedBy } from "../components/AskedBy/AskedBy.component";
-
-const user = {
-  username: "Scott Walton"
-}
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/user/userSlice";
 
 export const Profile = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const history = useHistory();
   return (
     <Container>
       <NavBar />
       <ContentContainer>
         <Header title="Profile">
-          <SignOutButton onClick={(e) => {localStorage.removeItem("user"); history.push(`/`)}}>Log out</SignOutButton>
+          <SignOutButton onClick={(e) => {localStorage.removeItem("user");  dispatch(logout()); history.push(`/`)}}>Log out</SignOutButton>
         </Header>
         <ProfileCard user={user}/>
         <AskedBy user={user}></AskedBy>

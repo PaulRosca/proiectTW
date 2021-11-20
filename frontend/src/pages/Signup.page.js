@@ -5,12 +5,16 @@ import { ActionButton } from "../components/ActionButton/ActionButton.styled";
 import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { signup } from "../features/user/userSlice";
+
 export const Singup = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,6 +30,7 @@ export const Singup = () => {
       )
       .then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data.user));
+        dispatch(signup(data.user));
         history.push("/");
       })
       .catch((e) => {

@@ -5,11 +5,14 @@ import FormGroup from "../components/FormGroup/FormGroup.component";
 import { ActionButton } from "../components/ActionButton/ActionButton.styled";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { login } from "../features/user/userSlice";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -23,6 +26,7 @@ export const Login = () => {
       )
       .then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data.user));
+        dispatch(login(data.user));
         history.push("/");
       })
       .catch((e) => {

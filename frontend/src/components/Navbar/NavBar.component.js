@@ -13,18 +13,19 @@ import {
   IconContainer,
   SignUpText,
 } from "./NavBar.styled";
+import { useSelector } from "react-redux";
 
 export const NavBar = () => {
   const location = useLocation();
   const [isActive, setIsActive] = useState(getActivePage(location));
   const [isConnected, setIsConnected] = useState(false);
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     setIsActive(getActivePage(location));
   }, [location]);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
     if (user) {
       setIsConnected(true);
     }
