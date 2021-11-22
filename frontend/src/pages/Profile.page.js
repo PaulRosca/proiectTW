@@ -8,6 +8,7 @@ import { ProfileCard } from "../components/ProfileCard/ProfileCard.component";
 import { AskedBy } from "../components/AskedBy/AskedBy.component";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
+import axios from "axios";
 
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,15 @@ export const Profile = () => {
       <NavBar />
       <ContentContainer>
         <Header title="Profile">
-          <SignOutButton onClick={(e) => {localStorage.removeItem("user");  dispatch(logout()); history.push(`/`)}}>Log out</SignOutButton>
+          <SignOutButton onClick={(e) => {
+          localStorage.removeItem("user");
+          dispatch(logout()); 
+          history.push(`/`);
+          axios.get(
+        "http://localhost:9000/user/logout",
+        { withCredentials: true }).then(res => {    
+          });
+         }}>Log out</SignOutButton>
         </Header>
         <ProfileCard user={user}/>
         <AskedBy user={user}></AskedBy>

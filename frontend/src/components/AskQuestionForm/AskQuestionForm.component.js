@@ -4,19 +4,23 @@ import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { Tag } from "../Tag/Tag.component";
 import { TagList } from "../Tag/Tag.styled";
+import { addQuestion } from "./AskQuestionForm.bl";
+import { useHistory } from "react-router";
 
 export const AskQuestionForm = () => {
+    const history = useHistory();
     const [tags, setTags] = useState([]);
     const [tagInput, setTagInput] = useState("");
-
+    const [content, setContent] = useState("");
+    const [title, setTitle] = useState("");
     return(
         <ContainerPd2>
             <LabelBg>Title</LabelBg>
             <Hint>Keep it as short and clear as possible</Hint>
-            <TitleInput placeholder="write your title here..."></TitleInput>
+            <TitleInput placeholder="write your title here..." value={title} onChange={(e) => setTitle(e.target.value)}></TitleInput>
             <LabelBg>Content</LabelBg>
             <Hint>Include all the informations that may be needed in order for someone to answer your question</Hint>
-            <AskTextarea placeholder="Write your informations here"></AskTextarea>
+            <AskTextarea placeholder="Write your informations here" value={content} onChange={(e) => setContent(e.target.value)}></AskTextarea>
             <LabelBg>Tags</LabelBg>
             <Hint>Key words that describe your question</Hint>
             <AddTagContainer>
@@ -34,7 +38,7 @@ export const AskQuestionForm = () => {
                 </TagList>
             </AddTagContainer>
             
-            <PostButton>Post</PostButton>
+            <PostButton onClick={(e) => addQuestion({title, content, tags}).then(_ => history.push(`/`))}>Post</PostButton>
         </ContainerPd2>
     )
 }
