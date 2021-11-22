@@ -37,7 +37,7 @@ export const NavBar = () => {
       <NavBarLinks>
         <NavBarLink isActive={isActive.home}>
           <Icon
-            icon="ant-design:home-outlined"
+            icon={isActive.home ? "ant-design:home-fill" : "ant-design:home-outlined"}
             style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
           ></Icon>
           <NavLink
@@ -49,7 +49,7 @@ export const NavBar = () => {
         </NavBarLink>
         <NavBarLink isActive={isActive.tags}>
           <Icon
-            icon="akar-icons:tag"
+            icon={isActive.tags ? "bi:tag-fill" : "akar-icons:tag"}
             style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
           ></Icon>
           <NavLink
@@ -62,7 +62,7 @@ export const NavBar = () => {
         {isConnected && (
           <AskLink isActive={isActive.ask}>
             <Icon
-              icon="wpf:ask-question"
+              icon={isActive.ask ? "akar-icons:question-fill":"akar-icons:question" }
               style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
             ></Icon>
             <NavLink
