@@ -17,6 +17,18 @@ export const createTag = async (req, res) => {
   return res.status(500).json({ message: error.message });
 };
 
+export const searchTag = async (req, res) => {
+  try{
+    const tagStartsWith = req.query.s;
+
+    const tags = await Tag.find({content: { $regex: `^${tagStartsWith}`, $options: `i`}}).lean().sort({questionsCount: -1}).limit(3).exec();
+    return res.status(200).json(tags);
+  }
+  catch(error){
+    return res.status(404).json({error});
+  }
+}
+
 export const createPost = async (req, res) => {
   try {
     const { title, content, tags } = req.body;

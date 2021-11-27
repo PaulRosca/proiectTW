@@ -9,12 +9,14 @@ import {
   likeComment,
   likePost,
   getPosts,
-  getComments
+  getComments,
+  searchTag
 } from "../controllers/posts.js";
 import { auth, extractUser } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/createTag", auth, createTag);
+router.get("/tag", searchTag);
 router.post("/createPost", auth, createPost);
 router.get("/getPost/:id", extractUser, getPost);
 router.post("/likePost/:id", auth, likePost);

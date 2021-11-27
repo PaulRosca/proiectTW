@@ -31,7 +31,7 @@ export const AddTagDiv = styled.div`
     border: 1px solid;
     border-color: rgb(118, 118, 118);
     border-radius: 4px;
-    margin: .5rem 0 1rem 0;
+    margin: .5rem 0 0 0;
     margin-right: 1rem;
     
 `;
@@ -58,4 +58,40 @@ export const AddTagContainer = styled.div`
 export const AddedTagContainer = styled.div`
     display: flex;
     align-items: center;
+`;
+
+export const TagSuggestionsContainer = styled.div`
+    width: 15rem;
+    padding: ${(props) => props.isActive ? `.4rem 1rem` : `0 1rem`};;
+    background-color: #202327;
+    border-radius: 4px;
+    height: ${(props) => props.isActive ? props.hasTags ? `5rem` : `2rem` : `0`};
+    display: flex;
+    flex-direction: column;
+    transition: .5s;
+    overflow-y: ${(props) => props.hasTags ? `scroll` : `none`};
+    --ms-overflow-style: none;
+    scrollbar-width: none; /* makes scrollbar dissapear in firefox */
+    &::-webkit-scrollbar{
+         display: none;
+    }
+`;
+
+export const TagSuggestion = styled.div`
+    border-bottom: 1px solid rgb(118,118,118);
+    font-size: .875rem;
+    color: #aaaaaa;
+    padding: .2rem 0;
+    visibility: ${(props) => props.isActive ? 'visible' : `hidden`};
+    transition-delay: ${(props) => props.isActive ? `.2s` : `0`};
+    &:hover{
+        cursor: pointer;
+    }
+`;
+
+export const TagNotFound = styled.p`
+    font-size: .875rem;
+    color: #aaaaaa;
+    visibility: ${(props) => props.isActive ? 'visible' : `hidden`};
+    transition-delay: ${(props) => props.isActive ? `.2s` : `0`};
 `;

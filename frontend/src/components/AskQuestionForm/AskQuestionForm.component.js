@@ -1,11 +1,13 @@
 import { ContainerPd2, Hint, LabelBg, PostButton } from "../../styles/Global.style"
-import { AskTextarea, TitleInput, AddTagDiv, AddTagInput, AddTagContainer, AddedTagContainer } from "./AskQuestionForm.styled"
+import { AskTextarea, TitleInput, AddTagDiv, AddTagInput, AddTagContainer, AddedTagContainer, TagSuggestionsContainer, TagSuggestion, TagNotFound } from "./AskQuestionForm.styled"
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { Tag } from "../Tag/Tag.component";
 import { TagList } from "../Tag/Tag.styled";
 import { addQuestion } from "./AskQuestionForm.bl";
 import { useHistory } from "react-router";
+import { useEffect } from "react";
+import axios from "axios";
 
 export const AskQuestionForm = () => {
     const history = useHistory();
@@ -13,6 +15,24 @@ export const AskQuestionForm = () => {
     const [tagInput, setTagInput] = useState("");
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
+    const [tagSuggestions, setTagSuggestions] = useState([]);
+    
+    useEffect(() => {
+        if (tagInput){
+            const getSuggestions = async (searchedWord) => {
+                try{
+                    const res = await axios.get(`http://localhost:9000/posts/tag`, {params: {s: searchedWord}});
+                    //console.log(res.data);
+                    setTagSuggestions([...res.data]);
+                }
+                catch(error){
+                    console.log(error);
+                }
+            }
+            getSuggestions(tagInput);
+        }
+    }, [tagInput])
+
     return(
         <ContainerPd2>
             <LabelBg>Title</LabelBg>
@@ -37,8 +57,12 @@ export const AskQuestionForm = () => {
                 )})}
                 </TagList>
             </AddTagContainer>
+            <TagSuggestionsContainer isActive={tagInput ? true : false} hasTags={tagSuggestions.length === 0 ? false : true}>
+                    {(tagSuggestions.length > 0) && tagSuggestions.map((s) => <TagSuggestion key={Math.random()} isActive={tagInput ? true : false} onClick={(e) => setTagInput(s.content)}>{s.content}</TagSuggestion>)}
+                    {(tagSuggestions.length === 0) && <TagNotFound isActive={tagInput ? true : false}>No tags found</TagNotFound>}
+            </TagSuggestionsContainer>
             
-            <PostButton onClick={(e) => addQuestion({title, content, tags}).then(_ => history.push(`/`))}>Post</PostButton>
+            <PostButton style={{"marginTop": "1rem"}}onClick={(e) => addQuestion({title, content, tags}).then(_ => history.push(`/`))}>Post</PostButton>
         </ContainerPd2>
     )
 }
