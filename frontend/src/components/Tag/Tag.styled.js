@@ -11,7 +11,7 @@ export const TagButton = styled.button`
     justify-content: center;
     align-items: center;
     height: 2rem;
-    min-width: fit-content;
+    min-width: 10rem;
     white-space: nowrap;
     padding: 1rem 2rem;
     color: black;

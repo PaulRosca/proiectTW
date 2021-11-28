@@ -20,8 +20,12 @@ export const createTag = async (req, res) => {
 export const searchTag = async (req, res) => {
   try{
     const tagStartsWith = req.query.s;
-
-    const tags = await Tag.find({content: { $regex: `^${tagStartsWith}`, $options: `i`}}).lean().sort({questionsCount: -1}).limit(3).exec();
+    const tags = await Tag
+    .find({content: { $regex: `^${tagStartsWith}`, $options: `i`}})
+    .lean()
+    .sort({questionsCount: -1})
+    .limit(30)
+    .exec();
     return res.status(200).json(tags);
   }
   catch(error){
@@ -31,8 +35,23 @@ export const searchTag = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, content, tags } = req.body;
-    const postData = { title, content, tags, createdBy: req.user.id };
+    const { title, content } = req.body;
+    const tags = req.body.tags;
+    let tagsId = [];
+    for (let tag of tags){
+      let isTag = await Tag.findOne({content: { $regex: `^${tag}$`, $options: `i`}}).exec();
+      if (isTag){
+        isTag.questionsCount += 1;
+        let updatedTag = await isTag.save();
+        updatedTag._id
+        tagsId.push(updatedTag._id);
+      }
+      else{
+        const newTag = await new Tag({content: tag, questionsCount: 1}).save();
+        tagsId.push(newTag._id);
+      }
+    }
+    const postData = { title, content, tags: tagsId, createdBy: req.user.id };
     const post = await new Post(postData).save();
     return res.status(201).json({ message: "Post created successfully", post });
   } catch (error) {
