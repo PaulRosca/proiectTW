@@ -4,14 +4,14 @@ export const Container = styled.div`
     border-radius: 4px;
     display: flex;
     background-color: #202327;
-    margin: 0 1rem 1rem 1rem;
+    margin: 1rem 2rem;
 `;
 
 export const Content = styled.p`
     font-size: .875rem;
-    padding: 1rem 2rem;
-    word-break: break-all;
     color: #aaaaaa;
+    padding: 0 1rem;
+    flex: 1;
 `;
 
 export const CommentDetails = styled.div`
@@ -20,15 +20,16 @@ export const CommentDetails = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem 0;
+    padding: .5rem 0;
+    min-width: 10rem;
 `;
 
 export const ContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     border-right: 1px solid white;
-    padding-bottom: 1rem;
-    flex: 5;
     max-width: 70rem;
-    min-width: 30rem;
+    min-width: 20rem;
+    width: 100%;
+    padding: .5rem 0;
 `;

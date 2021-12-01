@@ -1,4 +1,4 @@
-import { Container } from "./ReactToPost.styled";
+import { Container, ContainerComment } from "./ReactToPost.styled";
 import { Icon } from "@iconify/react";
 import { Stat } from "../Stat/Stat.component";
 
@@ -14,14 +14,13 @@ export const ReactToPost = ({
   return (
     <div>
       {isForComment && (
-        <Container>
+        <ContainerComment>
           <Icon
             icon="ant-design:dislike-outlined"
             onClick={onDislike}
             style={{
               cursor: "pointer",
-              fontSize: "1.5rem",
-              "margin-right": "1rem",
+              fontSize: "1.2rem",
               filter: userDisliked
                 ? "invert(41%) sepia(45%) saturate(7056%) hue-rotate(340deg) brightness(102%) contrast(101%)"
                 : "none",
@@ -33,14 +32,13 @@ export const ReactToPost = ({
             onClick={onLike}
             style={{
               cursor: "pointer",
-              fontSize: "1.5rem",
-              margin: "0 1rem",
+              fontSize: "1.2rem",
               filter: userLiked
                 ? "invert(63%) sepia(55%) saturate(371%) hue-rotate(100deg) brightness(90%) contrast(87%)"
                 : "none",
             }}
           ></Icon>
-        </Container>
+        </ContainerComment>
       )}
       {!isForComment && (
         <Container>
@@ -49,7 +47,7 @@ export const ReactToPost = ({
             onClick={onDislike}
             style={{
               cursor: "pointer",
-              fontSize: "2rem",
+              fontSize: "1.5rem",
               "margin-right": "1rem",
               filter: userDisliked
                 ? "invert(41%) sepia(45%) saturate(7056%) hue-rotate(340deg) brightness(102%) contrast(101%)"
@@ -63,7 +61,7 @@ export const ReactToPost = ({
             onClick={onLike}
             style={{
               cursor: "pointer",
-              fontSize: "2rem",
+              fontSize: "1.5rem",
               margin: "0 1rem",
               filter: userLiked
                 ? "invert(63%) sepia(55%) saturate(371%) hue-rotate(100deg) brightness(90%) contrast(87%)"

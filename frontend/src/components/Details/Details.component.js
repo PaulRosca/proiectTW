@@ -7,7 +7,7 @@ export const Details = ({ timestamp, createdBy }) => {
         <Container>
             <Time>Asked {getTimeSince(new Date(timestamp))} ago</Time>
             <Username>{createdBy.username}</Username>
-            <Icon icon="bx:bx-user" style={{"fontSize": "3rem", "alignSelf":"center"}}></Icon>
+            <Icon icon="bx:bx-user" style={{"fontSize": "2rem", "alignSelf":"center", "marginTop": ".2rem"}}></Icon>
         </Container>
     )
 }
