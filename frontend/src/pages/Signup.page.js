@@ -1,4 +1,4 @@
-import { Container } from "../styles/Global.style";
+import { Container, ContentContainer } from "../styles/Global.style";
 import { NavBar } from "../components/Navbar/NavBar.component";
 import FormGroup from "../components/FormGroup/FormGroup.component";
 import { ActionButton } from "../components/ActionButton/ActionButton.styled";
@@ -40,6 +40,7 @@ export const Singup = () => {
   return (
     <Container>
       <NavBar />
+      <ContentContainer>
       <div style={{ flex: "1 1 0" }}>
         <form
           style={{ width: "100%", margin: "3rem 0" }}
@@ -86,6 +87,7 @@ export const Singup = () => {
           </div>
         </form>
       </div>
+      </ContentContainer>
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import { Container } from "../styles/Global.style";
+import { Container, ContentContainer } from "../styles/Global.style";
 import { NavBar } from "../components/Navbar/NavBar.component";
 import { useState } from "react";
 import FormGroup from "../components/FormGroup/FormGroup.component";
@@ -36,6 +36,7 @@ export const Login = () => {
   return (
     <Container>
       <NavBar />
+      <ContentContainer>
       <div style={{ flex: "1 1 0" }}>
         <form
           style={{ width: "100%", margin: "3rem 0" }}
@@ -64,6 +65,7 @@ export const Login = () => {
           </div>
         </form>
       </div>
+      </ContentContainer>
     </Container>
   );
 };

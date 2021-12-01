@@ -12,6 +12,9 @@ import {
   LoginLink,
   IconContainer,
   SignUpText,
+  NavLinkText,
+  TitleText,
+  SignUpTextSmall
 } from "./NavBar.styled";
 import { useSelector } from "react-redux";
 
@@ -33,86 +36,95 @@ export const NavBar = () => {
 
   return (
     <NavBarContainer className="NavBar">
-      <NavBarTitle>FMI overflow</NavBarTitle>
+      <NavBarTitle>
+        <div>FMI</div>
+        <TitleText>overflow</TitleText>
+      </NavBarTitle>
       <NavBarLinks>
-        <NavBarLink isActive={isActive.home}>
-          <Icon
-            icon={isActive.home ? "ant-design:home-fill" : "ant-design:home-outlined"}
-            style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
-          ></Icon>
           <NavLink
             to="/"
-            style={{ textDecoration: "none", marginLeft: "1rem" }}
+            style={{ textDecoration: "none" }}
           >
-            Home
-          </NavLink>
-        </NavBarLink>
-        <NavBarLink isActive={isActive.tags}>
-          <Icon
-            icon={isActive.tags ? "bi:tag-fill" : "akar-icons:tag"}
-            style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
-          ></Icon>
-          <NavLink
-            to="/tags"
-            style={{ textDecoration: "none", marginLeft: "1rem" }}
-          >
-            Tags
-          </NavLink>
-        </NavBarLink>
-        {isConnected && (
-          <AskLink isActive={isActive.ask}>
+            <NavBarLink isActive={isActive.home}>
             <Icon
-              icon={isActive.ask ? "akar-icons:question-fill":"akar-icons:question" }
+              icon={isActive.home ? "ant-design:home-fill" : "ant-design:home-outlined"}
               style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
             ></Icon>
-            <NavLink
+            
+              <NavLinkText>Home</NavLinkText>
+          </NavBarLink>
+        </NavLink>
+        
+        <NavLink
+            to="/tags"
+            style={{ textDecoration: "none" }}
+        >
+          <NavBarLink isActive={isActive.tags}>
+            <Icon
+              icon={isActive.tags ? "bi:tag-fill" : "akar-icons:tag"}
+              style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
+            ></Icon>
+              <NavLinkText>Tags</NavLinkText>
+          </NavBarLink>
+        </NavLink>
+
+        {isConnected && (
+          <NavLink
               to="/ask"
-              style={{ textDecoration: "none", marginLeft: "1rem" }}
+              style={{ textDecoration: "none" }}
             >
-              Ask
+            <AskLink isActive={isActive.ask}>
+              <Icon
+                icon={isActive.ask ? "akar-icons:question-fill":"akar-icons:question" }
+                style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
+              ></Icon>
+              
+                <NavLinkText>Ask</NavLinkText>
+            </AskLink>
             </NavLink>
-          </AskLink>
         )}
       </NavBarLinks>
 
       {isConnected && (
         <NavBarBottom>
-          <NavBarLink isActive={isActive.profile}>
-            <Icon
-              icon="healthicons:ui-user-profile"
-              style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
-            ></Icon>
-            <NavLink
+        <NavLink
               to="/profile/123"
-              style={{ textDecoration: "none", marginLeft: "1rem" }}
+              style={{ textDecoration: "none" }}
             >
-              Profile
-            </NavLink>
-          </NavBarLink>
+            <NavBarLink isActive={isActive.profile}>
+              <Icon
+                icon="healthicons:ui-user-profile"
+                style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
+              ></Icon>
+              
+                <NavLinkText>Profile</NavLinkText>
+            </NavBarLink>
+          </NavLink>
         </NavBarBottom>
       )}
       {!isConnected && (
         <NavBarBottom>
-          <LoginLink>
-            <NavLink
+        <NavLink
               to="/login"
-              style={{ textDecoration: "none", marginRight: "1.5rem" }}
-            >
-              Login
-            </NavLink>
-            <IconContainer>
-              <Icon
-                icon="akar-icons:arrow-right"
-                style={{ color: "white" }}
-              ></Icon>
-            </IconContainer>
-          </LoginLink>
-          <SignUpText>
-            <span>or </span>
-            <NavLink to="/signup" style={{}}>
+              style={{ textDecoration: "none" }}
+        >
+            <LoginLink>
+            Login
+              <IconContainer>
+                <Icon
+                  icon="akar-icons:arrow-right"
+                  style={{ color: "white" }}
+                ></Icon>
+              </IconContainer>
+            </LoginLink>
+        </NavLink>
+
+        <NavLink to="/signup">
+            <SignUpText>
               create an account
-            </NavLink>
-          </SignUpText>
+            </SignUpText>
+            <SignUpTextSmall>Register</SignUpTextSmall>
+        </NavLink>  
         </NavBarBottom>
       )}
     </NavBarContainer>
