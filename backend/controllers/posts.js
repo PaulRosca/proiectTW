@@ -8,52 +8,107 @@ import CommentDislike from "../models/Comment/CommentDislikeModel.js";
 import mongoose from "mongoose";
 const postsPageSize = 6;
 const commentsPageSize = 6;
+const tagsPageSize = 2;
 
 export const createTag = async (req, res) => {
   try {
     const tag = await new Tag(req.body).save();
     return res.status(201).json({ message: "Tag created successfully", tag });
-  } catch (error) {}
-  return res.status(500).json({ message: error.message });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 export const searchTag = async (req, res) => {
-  try{
-    const tagStartsWith = req.query.s;
-    const tags = await Tag
-    .find({content: { $regex: `^${tagStartsWith}`, $options: `i`}})
-    .lean()
-    .sort({questionsCount: -1})
-    .limit(30)
-    .exec();
+  try {
+    const query = req.query.search;
+    let tags;
+    if (query && query.length > 1) {
+      tags = await Tag.collection
+        .aggregate([
+          {
+            $search: {
+              index: "default",
+              autocomplete: {
+                query,
+                path: "content",
+              },
+            },
+          },
+          {
+            $limit: tagsPageSize,
+          },
+          {
+            $sort: {
+              questionsCount: -1,
+            },
+          },
+        ])
+        .toArray();
+    } else {
+      tags = await Tag.find()
+        .sort({ questionsCount: -1 })
+        .limit(tagsPageSize)
+        .exec();
+    }
     return res.status(200).json(tags);
+  } catch (error) {
+    return res.status(404).json({ error });
   }
-  catch(error){
-    return res.status(404).json({error});
-  }
-}
+};
 
 export const createPost = async (req, res) => {
   try {
-    const { title, content } = req.body;
-    const tags = req.body.tags;
-    let tagsId = [];
-    for (let tag of tags){
-      let isTag = await Tag.findOne({content: { $regex: `^${tag}$`, $options: `i`}}).exec();
-      if (isTag){
-        isTag.questionsCount += 1;
-        let updatedTag = await isTag.save();
-        updatedTag._id
-        tagsId.push(updatedTag._id);
-      }
-      else{
-        const newTag = await new Tag({content: tag, questionsCount: 1}).save();
-        tagsId.push(newTag._id);
-      }
+    const { title, content, tags } = req.body;
+    if (new Set(tags).size !== tags.length) {
+      throw new Error("Duplicate tags!");
     }
-    const postData = { title, content, tags: tagsId, createdBy: req.user.id };
-    const post = await new Post(postData).save();
+    const post = await new Post({
+      title,
+      content,
+      tags,
+      createdBy: req.user.id,
+    }).save();
+    for (const tag of tags) {
+      await Tag.updateOne({ _id: tag }, { $inc: { questionsCount: 1 } });
+    }
     return res.status(201).json({ message: "Post created successfully", post });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post.createdBy.equals(req.user.id)) {
+      return res.status(403).json({ message: "Post doesn't belong to user!" });
+    }
+    await Post.findByIdAndDelete(req.params.id);
+    for (const tag of post.tags) {
+      await Tag.updateOne({ _id: tag }, { $inc: { questionsCount: -1 } });
+    }
+    await PostLike.deleteMany({
+      post: post._id,
+    });
+    await PostDislike.deleteMany({
+      post: post._id,
+    });
+    const comments = await Comment.find({ post: post._id })
+      .select("-content -user -likeCount -dislikeCount -post")
+      .exec();
+    for (const comment of comments) {
+      await Comment.findByIdAndDelete(comment);
+      await CommentLike.deleteMany({
+        comment,
+      });
+      await CommentDislike.deleteMany({
+        comment,
+      });
+    }
+    return res
+      .status(200)
+      .json({ message: `Successfully deleted post with id ${post._id}` });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -262,7 +317,30 @@ export const addComment = async (req, res) => {
     await Post.updateOne({ _id: req.params.id }, { $inc: { commentCount: 1 } });
     return res.status(201).json({ comment: populatedComment });
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment.user.equals(req.user.id)) {
+      return res
+        .status(403)
+        .json({ message: "Comment doesn't belong to user!" });
+    }
+    await Comment.findByIdAndDelete(req.params.id);
+    await CommentLike.deleteMany({
+      comment: comment._id,
+    });
+    await CommentDislike.deleteMany({
+      comment: comment._id,
+    });
+    await Post.updateOne({ _id: comment.post }, { $inc: { commentCount: -1 } });
+    return res.status(200).json({
+      message: `Successfully deleted comment with id ${comment._id}!`,
+    });
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
