@@ -7,6 +7,8 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { signup } from "../features/user/userSlice";
+import { Header } from "../components/Header/Header.component";
+import { Link } from "react-router-dom";
 
 export const Singup = () => {
   const [email, setEmail] = useState("");
@@ -41,20 +43,20 @@ export const Singup = () => {
     <Container>
       <NavBar />
       <ContentContainer>
-      <div style={{ flex: "1 1 0" }}>
+      <Header title="Create an account" />
+      <div>
         <form
-          style={{ width: "100%", margin: "3rem 0" }}
           onSubmit={handleSubmit}
           autoComplete="off"
         >
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div >
             <FormGroup
               type="email"
               id="email-field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               label="Email"
-              error={true}
+              error={false}
             />
             <FormGroup
               type="text"
@@ -65,7 +67,7 @@ export const Singup = () => {
               label="Username"
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
             <FormGroup
               type="password"
               class="form-control"
@@ -82,10 +84,11 @@ export const Singup = () => {
               label="Confirm Password"
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
             <ActionButton type="submit">Sign up</ActionButton>
           </div>
         </form>
+        <div style={{margin:".5rem 2rem", "fontSize": ".875rem", "fontWeight": "300", color: "#AAAAAA", "padding": "0 .5rem"}}>Already have an account? <Link to="/login" style={{color: "#AAAAAA"}}>Login</Link></div>
       </div>
       </ContentContainer>
     </Container>

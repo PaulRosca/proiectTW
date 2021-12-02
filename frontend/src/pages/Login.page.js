@@ -7,6 +7,8 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { login } from "../features/user/userSlice";
+import { Header } from "../components/Header/Header.component";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,13 +39,11 @@ export const Login = () => {
     <Container>
       <NavBar />
       <ContentContainer>
-      <div style={{ flex: "1 1 0" }}>
+      <Header title="Login" />
         <form
-          style={{ width: "100%", margin: "3rem 0" }}
           onSubmit={handleSubmit}
           autoComplete="off"
-        >
-          <div style={{ display: "flex", justifyContent: "center" }}>
+        > 
             <FormGroup
               type="email"
               id="email-field"
@@ -59,12 +59,9 @@ export const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               label="Password"
             />
-          </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
             <ActionButton type="submit">Login</ActionButton>
-          </div>
+            <div style={{margin:".5rem 2rem", "fontSize": ".875rem", "fontWeight": "300", color: "#AAAAAA", "padding": "0 .5rem"}}>Don't have an account? <Link to="/signup" style={{color: "#AAAAAA"}}>Register</Link></div>
         </form>
-      </div>
       </ContentContainer>
     </Container>
   );
