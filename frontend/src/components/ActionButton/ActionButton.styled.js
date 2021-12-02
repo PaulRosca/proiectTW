@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
 const ActionButton = styled.button`
-  font-size: 2rem;
-  magin: 1rem 0;
+  width: 15rem;
+  font-size: 1rem;
+  margin: 0 2rem;
   padding: 0.25rem 1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
   background-color: #52b788;
   font-weight: 500;
-  padding: 0.25 rem 1 rem;
-  border-radius: 10 px;
   cursor: pointer;
   &:hover {
     background-color: #398360;

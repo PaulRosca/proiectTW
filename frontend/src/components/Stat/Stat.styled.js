@@ -5,7 +5,9 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     flex: 1;
-`;
+    font-size: .8rem;
+`
+
 export const StatValue = styled.p`
     align-self: center;
 `;

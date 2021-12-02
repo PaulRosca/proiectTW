@@ -5,6 +5,7 @@ export const Container = styled.div`
     flex-direction: column;
     flex: 1;
     justify-content: center;
+    margin-bottom: .5rem;
 `;
 
 export const Time = styled.p`
@@ -17,4 +18,5 @@ export const Username = styled.p`
     color: #536471;
     font-size: .8rem;
     align-self: center;
+    margin-top: .2rem;
 `;
