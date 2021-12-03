@@ -10,8 +10,7 @@ export const DetailedTags = () => {
 
     useEffect(() => {
         const getTags = async () => {
-            const res = await axios.get(`http://localhost:9000/posts/tag`, {params: {s : ""}});
-            console.log(res.data);
+            const res = await axios.get(`http://localhost:9000/posts/tags`, {params: {s : ""}});
             setTags(res.data);
             setIsLoading(false);
         }
@@ -20,7 +19,7 @@ export const DetailedTags = () => {
     return(
         <Container>
             {isLoading && <p>loading...</p>}
-            {!isLoading && tags.map(tag => <DetailedTag tag={tag} />)}
+            {!isLoading && tags.map(tag => <DetailedTag tag={tag} key={tag._id}/>)}
         </Container>
     )
 }

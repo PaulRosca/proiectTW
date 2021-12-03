@@ -48,7 +48,7 @@ export const ReactToPost = ({
             style={{
               cursor: "pointer",
               fontSize: "1.5rem",
-              "margin-right": "1rem",
+              "marginRight": "1rem",
               filter: userDisliked
                 ? "invert(41%) sepia(45%) saturate(7056%) hue-rotate(340deg) brightness(102%) contrast(101%)"
                 : "none",

@@ -16,7 +16,7 @@ export const PostThumbnail = ({post}) => {
                 <Content>{content}</Content>
                 <TagPlace>
                 <TagList>
-                {tags.map(tag => <Tag name={tag.content}/>)}
+                {tags.map(tag => <Tag name={tag.content} key={tag.content}/>)}
                 </TagList>
                 </TagPlace>
             </PostContent>

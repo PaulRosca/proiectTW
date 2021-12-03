@@ -28,7 +28,7 @@ export const NavBarBottom = styled.div`
   flex-direction: column;
 `;
 
-export const NavBarLink = styled.p`
+export const NavBarLink = styled.div`
   width: 10rem;
   background-color: ${(props) => (props.isActive ? `#202327` : `inherit`)};
   font-size: 1rem;
@@ -49,7 +49,7 @@ export const NavBarLink = styled.p`
   }
 `;
 
-export const NavBarTitle = styled.p`
+export const NavBarTitle = styled.div`
   align-self: center;
   font-size: 1.5rem;
   white-space: nowrap;
@@ -70,7 +70,7 @@ export const TitleText = styled.p`
   }
 `;
 
-export const AskLink = styled.p`
+export const AskLink = styled.div`
   width: 10rem;
   background-color: #3A8663;
   font-size: 1.2rem;
@@ -90,7 +90,7 @@ export const AskLink = styled.p`
   }
 `;
 
-export const LoginLink = styled.p`
+export const LoginLink = styled.div`
   width: 10rem;
   background-color: #52b788;
   font-size: 1rem;

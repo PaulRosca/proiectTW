@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Comment } from "../Comment/Comment.component";
 import { Container, Title } from "../CommentSection/CommentSection.styled";
 
@@ -6,7 +7,10 @@ export const CommentSection = ({
   likeComment,
   dislikeComment,
   loading,
+  deleteComment
 }) => {
+
+  
   return (
     <Container>
       <Title>Answers</Title>
@@ -16,6 +20,7 @@ export const CommentSection = ({
             comment={comment}
             onLike={likeComment}
             onDislike={dislikeComment}
+            onDelete={deleteComment}
             key={comment._id}
           />
         ))}

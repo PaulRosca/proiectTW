@@ -233,7 +233,6 @@ export const Post = (props) => {
       });
   };
   useEffect(() => {
-    console.log(props.match.params.id);
     getPost();
     getComments();
   }, []);
@@ -255,7 +254,6 @@ export const Post = (props) => {
         { withCredentials: true }
       )
       .then(({ data }) => {
-        console.log(data);
         setCommentsState((state) => {
           return {
             ...state,
@@ -267,6 +265,22 @@ export const Post = (props) => {
         console.log(e);
       });
   };
+
+  const deleteComment = async (_id) => {
+    try{
+      const res = await axios.delete(`http://localhost:9000/posts/deleteComment/${_id}`, { withCredentials: true});
+      console.log(commentsState.comments);
+      let newComments = commentsState.comments.filter(comm => comm._id !== _id);
+      setCommentsState((state) => {
+        return{
+          ...state,
+          comments: [...newComments]
+        }
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <Container>
@@ -297,6 +311,7 @@ export const Post = (props) => {
           likeComment={likeComment}
           dislikeComment={dislikeComment}
           loading={commentsState.loading}
+          deleteComment={deleteComment}
         />
       </ContentContainer>
     </Container>

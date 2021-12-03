@@ -31,5 +31,17 @@ export const ContentContainer = styled.div`
     max-width: 70rem;
     min-width: 20rem;
     width: 100%;
-    padding: .5rem 0;
+    padding: .5rem 0 1rem 0;
+    position: relative;
+`;
+
+export const DeleteComment = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    font-size: .625rem;
+    color:#AAAAAA;
+    &:hover{
+        cursor: pointer;
+    }
 `;

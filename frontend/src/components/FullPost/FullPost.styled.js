@@ -16,6 +16,7 @@ export const PostContent = styled.div`
     max-width: 70rem;
     min-width: 20rem;
     width: 100%;
+    position: relative;
 `;
 
 export const PostHeader = styled.div`
@@ -45,4 +46,15 @@ export const FullContent = styled.div`
     color: #AAAAAA;
     word-break: break-all;
     font-size: .875rem;
+`;
+
+export const DeletePost = styled.div`
+    position: absolute;
+    bottom: .5rem;
+    left: 1rem;
+    font-size: .625rem;
+    color: #AAAAAA;
+    &:hover{
+        cursor: pointer;
+    }
 `;
