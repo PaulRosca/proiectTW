@@ -13,12 +13,14 @@ import {
   searchTag,
   deleteComment,
   deletePost,
+  hottestTags,
 } from "../controllers/posts.js";
 import { auth, extractUser } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/createTag", auth, createTag);
 router.get("/tags", searchTag);
+router.get("/hotTags", hottestTags);
 router.post("/createPost", auth, createPost);
 router.delete("/deletePost/:id", auth, deletePost);
 router.get("/getPost/:id", extractUser, getPost);

@@ -8,17 +8,24 @@ import CommentDislike from "../models/Comment/CommentDislikeModel.js";
 import mongoose from "mongoose";
 const postsPageSize = 6;
 const commentsPageSize = 6;
-const tagsPageSize = 2;
+const tagsPageSize = 4;
 
 export const createTag = async (req, res) => {
   try {
     const tag = await new Tag(req.body).save();
-    return res.status(201).json({ message: "Tag created successfully", tag });
+    return res.status(201).json({ message: "Tag created successfully!", tag });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
-
+export const hottestTags = async (req, res) => {
+  try {
+    const tags = await Tag.find().sort({ questionsCount: -1 }).limit(50).exec();
+    return res.status(200).json(tags);
+  } catch (error) {
+    return res.status(404).json({ error });
+  }
+};
 export const searchTag = async (req, res) => {
   try {
     const query = req.query.search;
@@ -72,7 +79,9 @@ export const createPost = async (req, res) => {
     for (const tag of tags) {
       await Tag.updateOne({ _id: tag }, { $inc: { questionsCount: 1 } });
     }
-    return res.status(201).json({ message: "Post created successfully", post });
+    return res
+      .status(201)
+      .json({ message: "Post created successfully!", post });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -171,7 +180,7 @@ export const getComments = async (req, res) => {
 };
 
 export const getPosts = async (req, res) => {
-  const { sorting, postID } = req.query;
+  const { sorting, postID, createdBy } = req.query;
   try {
     const sorting_r = sorting === "asc" ? 1 : -1;
     let postID_r = null;
@@ -184,6 +193,7 @@ export const getPosts = async (req, res) => {
         ? { _id: { $gt: postID_r } }
         : { _id: { $lt: postID_r } }
       : {};
+    if (createdBy) filter["createdBy"] = { $in: createdBy };
     const posts = await Post.find(filter)
       .sort({ _id: sorting_r })
       .populate("createdBy")
