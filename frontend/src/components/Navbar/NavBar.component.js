@@ -88,7 +88,7 @@ export const NavBar = () => {
       {isConnected && (
         <NavBarBottom>
         <NavLink
-              to="/profile/123"
+              to={`/profile/${user._id}`}
               style={{ textDecoration: "none" }}
             >
             <NavBarLink isActive={isActive.profile}>
