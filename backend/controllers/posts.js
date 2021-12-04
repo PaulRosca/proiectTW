@@ -87,9 +87,38 @@ export const createPost = async (req, res) => {
   }
 };
 
+export const editPost = async (req, res) => {
+  try {
+    const { title, content, tags } = req.body;
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(400).json({ message: "Post doesn't exist!" });
+    }
+    if (!post.createdBy.equals(req.user.id)) {
+      return res.status(403).json({ message: "Post doesn't belong to user!" });
+    }
+    if (title) {
+      post.title = title;
+    }
+    if (content) {
+      post.content = content;
+    }
+    if (tags) {
+      post.tags = tags;
+    }
+    post.save();
+    return res.status(200).json({ message: "Successfully updated post", post });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(400).json({ message: "Post doesn't exist!" });
+    }
     if (!post.createdBy.equals(req.user.id)) {
       return res.status(403).json({ message: "Post doesn't belong to user!" });
     }
@@ -332,9 +361,34 @@ export const addComment = async (req, res) => {
   }
 };
 
+export const editComment = async (req, res) => {
+  try {
+    const { content } = req.body;
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      return res.status(400).json({ message: "Comment doesn't exist!" });
+    }
+    if (!comment.user.equals(req.user.id)) {
+      return res
+        .status(403)
+        .json({ message: "Comment doesn't belong to user!" });
+    }
+    comment.content = content;
+    comment.save();
+    return res
+      .status(200)
+      .json({ message: "Comment updated successfully", comment });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      return res.status(400).json({ message: "Comment doesn't exist!" });
+    }
     if (!comment.user.equals(req.user.id)) {
       return res
         .status(403)
