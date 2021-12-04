@@ -5,14 +5,18 @@ import { SearchBar } from "../components/SearchBar/SearchBar.component";
 import { PostThumbnail } from "../components/PostThumbnail/PostThumbnail.component";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useLocation } from "react-router-dom";
 export const Home = () => {
+  const location = useLocation();
   const getPosts = () => {
     if (postsState.lastPostID !== "same") {
       axios
-        .get(
-          `http://localhost:9000/posts/getPosts?postID=${postsState.lastPostID}`
-        )
+        .get(`http://localhost:9000/posts/getPosts`, {
+          params: {
+            postID: postsState.lastPostID,
+            tags: new URLSearchParams(location.search).get("tags"),
+          },
+        })
         .then(({ data }) => {
           setPostsState((state) => {
             return {

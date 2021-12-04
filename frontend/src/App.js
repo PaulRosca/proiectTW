@@ -27,9 +27,7 @@ export default function App() {
           <Singup />
         </Route>
         <Route path="/post/:id" component={Post} />
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/" component={Home} />
       </Switch>
     </Router>
   );
