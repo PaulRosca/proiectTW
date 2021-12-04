@@ -181,7 +181,6 @@ export const getComments = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   let { sorting, postID, createdBy, tags } = req.query;
-  tags = tags.split(",");
   try {
     const sorting_r = sorting === "asc" ? 1 : -1;
     let postID_r = null;
@@ -195,7 +194,7 @@ export const getPosts = async (req, res) => {
         : { _id: { $lt: postID_r } }
       : {};
     if (createdBy) filter["createdBy"] = { $in: createdBy };
-    if (tags) filter["tags"] = { $in: tags };
+    if (tags) filter["tags"] = { $in: tags.split(",") };
     const posts = await Post.find(filter)
       .sort({ _id: sorting_r })
       .populate("createdBy")

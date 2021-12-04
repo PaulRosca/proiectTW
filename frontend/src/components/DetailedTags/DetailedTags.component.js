@@ -29,9 +29,7 @@ const DetailedTag = ({ tag }) => {
   const handleClick = () => {
     history.push({
       pathname: "/",
-      search:
-        "?" +
-        new URLSearchParams({ tags: [tag._id, "61a3a09f444c9b7777e7f705"] }),
+      search: "?" + new URLSearchParams({ tags: [tag._id] }),
     });
   };
   return (
