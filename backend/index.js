@@ -6,6 +6,7 @@ import { connectDB } from "./config/db.js";
 import rateLimit from "express-rate-limit";
 import authenticationRoutes from "./routes/authentication.js";
 import postsRoutes from "./routes/posts.js";
+import profilePictureRoutes from "./routes/profilePictures.js";
 const server = express();
 
 const limiter = rateLimit({
@@ -27,6 +28,7 @@ server.use(express.urlencoded({ extended: true }));
 
 server.use("/user", authenticationRoutes);
 server.use("/posts", postsRoutes);
+server.use("/profilePicture", profilePictureRoutes);
 
 const PORT = process.env.PORT || 9000;
 
