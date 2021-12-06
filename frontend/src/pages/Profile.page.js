@@ -15,6 +15,19 @@ export const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const history = useHistory();
+  const { id } = useParams();
+  const [userProfile, setUserProfile] = useState({})
+  const getUserData = (e) => {
+    axios
+      .get(`http://localhost:9000/user/${id}`)
+      .then(({ data }) => {
+        setUserProfile(data);
+      })
+      .catch(err => {
+        console.log(err);
+      }) 
+  }
+
   const handleScroll = (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -30,7 +43,7 @@ export const Profile = () => {
         .get(`http://localhost:9000/posts/getPosts`, {
           params: {
             postID: postsState.lastPostID,
-            createdBy: user._id,
+            createdBy: id,
           },
         })
         .then(({ data }) => {
@@ -69,6 +82,7 @@ export const Profile = () => {
         loading: true,
       };
     });
+    getUserData();
     getUserPosts();
   }, []);
   return (
@@ -76,7 +90,7 @@ export const Profile = () => {
       <NavBar />
       <ContentContainer onScroll={handleScroll}>
         <Header title="Profile">
-          <SignOutButton
+          {user && user._id === id && <SignOutButton
             onClick={(e) => {
               localStorage.removeItem("user");
               dispatch(logout());
@@ -89,10 +103,10 @@ export const Profile = () => {
             }}
           >
             Log out
-          </SignOutButton>
+          </SignOutButton>}
         </Header>
-        <ProfileCard user={user} />
-        <AskedBy user={user} postsState={postsState}></AskedBy>
+        <ProfileCard user={userProfile} />
+        <AskedBy user={userProfile} postsState={postsState}></AskedBy>
       </ContentContainer>
     </Container>
   );
