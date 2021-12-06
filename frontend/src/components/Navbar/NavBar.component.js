@@ -17,13 +17,14 @@ import {
   SignUpTextSmall
 } from "./NavBar.styled";
 import { useSelector } from "react-redux";
+import ReactImageFallback from "react-image-fallback";
 
 export const NavBar = () => {
   const location = useLocation();
   const [isActive, setIsActive] = useState(getActivePage(location));
   const [isConnected, setIsConnected] = useState(false);
   const user = useSelector(state => state.user);
-
+  const defaultImage = <Icon icon="healthicons:ui-user-profile" style={{ color: "white", width: "1.2rem", height: "1.2rem" }}></Icon>;
   useEffect(() => {
     setIsActive(getActivePage(location));
   }, [location]);
@@ -92,10 +93,12 @@ export const NavBar = () => {
               style={{ textDecoration: "none" }}
             >
             <NavBarLink isActive={isActive.profile}>
-              <Icon
-                icon="healthicons:ui-user-profile"
-                style={{ color: "white", width: "1.2rem", height: "1.2rem" }}
-              ></Icon>
+              
+              <ReactImageFallback
+                src={`http://localhost:9000/profilePicture/user/${user._id}`}
+                fallbackImage={defaultImage}
+                style={{width: '1.2rem', height: '1.2rem', alignSelf: 'center', objectFit: 'cover', borderRadius: '4px'}}
+            />
               
                 <NavLinkText>Profile</NavLinkText>
             </NavBarLink>

@@ -15,6 +15,6 @@ const fileFilter = (req, file, cb) => {
 const router = express.Router();
 const upload = multer({ dest: "uploads/", fileFilter });
 router.post("/", auth, upload.single("profilePicture"), setProfilePicture);
-router.get("/user/:id", auth, getProfilePicture);
+router.get("/user/:id", getProfilePicture);
 
 export default router;
