@@ -42,7 +42,7 @@ export const Profile = () => {
       axios
         .get(`http://localhost:9000/posts/getPosts`, {
           params: {
-            postID: postsState.lastPostID,
+            lastValue: postsState.lastValue,
             createdBy: id,
           },
         })
@@ -51,7 +51,7 @@ export const Profile = () => {
             return {
               ...state,
               posts: [...state.posts, ...data.posts],
-              lastPostID: data.lastPostID,
+              lastValue: data.lastValue,
               error: false,
               loading: false,
             };
@@ -72,7 +72,7 @@ export const Profile = () => {
     posts: [],
     loading: false,
     error: false,
-    lastPostID: undefined,
+    lastValue: undefined,
     hasMore: true,
   });
   useEffect(() => {

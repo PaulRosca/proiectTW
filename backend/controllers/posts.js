@@ -209,34 +209,210 @@ export const getComments = async (req, res) => {
 };
 
 export const getPosts = async (req, res) => {
-  let { sorting, postID, createdBy, tags } = req.query;
+  let { sorting, lastValue, createdBy, tags, lastID } = req.query;
   try {
-    const sorting_r = sorting === "asc" ? 1 : -1;
-    let postID_r = null;
-    try {
-      postID_r = mongoose.Types.ObjectId(postID);
-    } catch (err) {}
-
-    const filter = postID_r
-      ? sorting_r === 1
-        ? { _id: { $gt: postID_r } }
-        : { _id: { $lt: postID_r } }
-      : {};
+    let sort;
+    let filter;
+    let postID = null;
+    if (lastID) {
+      try {
+        postID = mongoose.Types.ObjectId(lastID);
+      } catch (err) {}
+    }
+    switch (sorting) {
+      case "date:asc":
+        sort = { _id: 1 };
+        filter = postID ? { _id: { $gt: postID } } : {};
+        break;
+      case "date:desc":
+        sort = { _id: -1 };
+        filter = postID ? { _id: { $lt: postID } } : {};
+        break;
+      case "rating:asc":
+        sort = { rating: 1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { rating: { $gt: parseInt(lastValue) } },
+                  {
+                    rating: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      case "rating:desc":
+        sort = { rating: -1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { rating: { $lt: parseInt(lastValue) } },
+                  {
+                    rating: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      case "views:asc":
+        sort = { views: 1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { views: { $gt: parseInt(lastValue) } },
+                  {
+                    views: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      case "views:desc":
+        sort = { views: -1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { views: { $lt: parseInt(lastValue) } },
+                  {
+                    views: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      case "commentCount:asc":
+        sort = { commentCount: 1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { commentCount: { $gt: parseInt(lastValue) } },
+                  {
+                    commentCount: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      case "commentCount:desc":
+        sort = { commentCount: -1, _id: -1 };
+        filter =
+          lastValue && postID
+            ? {
+                $or: [
+                  { commentCount: { $lt: parseInt(lastValue) } },
+                  {
+                    commentCount: parseInt(lastValue),
+                    _id: { $lt: postID },
+                  },
+                ],
+              }
+            : {};
+        break;
+      default:
+        sort = { _id: -1 };
+        filter = postID ? { _id: { $lt: postID } } : {};
+        break;
+    }
     if (createdBy) filter["createdBy"] = { $in: createdBy };
     if (tags) filter["tags"] = { $in: tags.split(",") };
-    const posts = await Post.find(filter)
-      .sort({ _id: sorting_r })
-      .populate("createdBy")
-      .populate("tags")
-      .limit(postsPageSize)
-      .exec();
-    const hasPosts = posts.length > 0;
+    const posts = await Post.collection
+      .aggregate([
+        {
+          $addFields: {
+            rating: {
+              $subtract: ["$likeCount", "$dislikeCount"],
+            },
+          },
+        },
+        {
+          $match: filter,
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "createdBy",
+            foreignField: "_id",
+            as: "createdBy",
+          },
+        },
+        { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: "tags",
+            localField: "tags",
+            foreignField: "_id",
+            as: "tags",
+          },
+        },
+
+        {
+          $sort: sort,
+        },
+        { $limit: postsPageSize },
+        {
+          $project: {
+            "createdBy.password": 0,
+            "createdBy.email": 0,
+            "createdBy.profilePicture": 0,
+            "createdBy.__v": 0,
+            "createdBy.updatedAt": 0,
+            "createdBy.createdAt": 0,
+            "tags._id": 0,
+            "tags.questionsCount": 0,
+            "tags.__v": 0,
+          },
+        },
+      ])
+      .toArray();
+
+    lastValue = undefined;
+    lastID = undefined;
+    if (posts.length > 0) {
+      lastID = posts[posts.length - 1]._id;
+      switch (sorting) {
+        case "rating:asc":
+          lastValue = posts[posts.length - 1].rating;
+          break;
+        case "rating:desc":
+          lastValue = posts[posts.length - 1].rating;
+          break;
+        case "views:asc":
+          lastValue = posts[posts.length - 1].views;
+          break;
+        case "views:desc":
+          lastValue = posts[posts.length - 1].views;
+          break;
+        case "commentCount:asc":
+          lastValue = posts[posts.length - 1].commentCount;
+          break;
+        case "commentCount:desc":
+          lastValue = posts[posts.length - 1].commentCount;
+          break;
+        default:
+          break;
+      }
+    } else {
+      lastID = "same";
+      lastValue = "same";
+    }
+
     return res.status(200).json({
       posts,
-      lastPostID: hasPosts ? posts[posts.length - 1]._id : "same",
+      lastID,
+      lastValue,
     });
   } catch (error) {
-    return res.status(404).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 export const getPost = async (req, res) => {

@@ -63,7 +63,7 @@ export const getUser = async (req, res) => {
   const user = await User.findById(id).select("-password");
   return res.status(200).json(user);
   }
-  catch (err){
+  catch (error){
     return res.status(500).json({ success: false, message: error.message });
   }
 };

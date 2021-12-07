@@ -9,12 +9,15 @@ import { useLocation } from "react-router-dom";
 export const Home = () => {
   const location = useLocation();
   const getPosts = () => {
-    if (postsState.lastPostID !== "same") {
+    if (postsState.lastValue !== "same" && postsState.lastID !== "same") {
+      console.log(postsState);
       axios
         .get(`http://localhost:9000/posts/getPosts`, {
           params: {
-            postID: postsState.lastPostID,
+            lastValue: postsState.lastValue,
+            lastID: postsState.lastID,
             tags: new URLSearchParams(location.search).get("tags"),
+            sorting: "commentCount:desc", //new URLSearchParams(location.search).get("sorting"),
           },
         })
         .then(({ data }) => {
@@ -22,7 +25,8 @@ export const Home = () => {
             return {
               ...state,
               posts: [...state.posts, ...data.posts],
-              lastPostID: data.lastPostID,
+              lastValue: data.lastValue,
+              lastID: data.lastID,
               error: false,
               loading: false,
             };
@@ -52,7 +56,8 @@ export const Home = () => {
     posts: [],
     loading: false,
     error: false,
-    lastPostID: undefined,
+    lastValue: undefined,
+    lastID: undefined,
     hasMore: true,
   });
   useEffect(() => {
