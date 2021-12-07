@@ -5,9 +5,10 @@ import { SearchBar } from "../components/SearchBar/SearchBar.component";
 import { PostThumbnail } from "../components/PostThumbnail/PostThumbnail.component";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 export const Home = () => {
   const location = useLocation();
+  const history = useHistory();
   const getPosts = () => {
     if (postsState.lastValue !== "same" && postsState.lastID !== "same") {
       console.log(postsState);
@@ -17,7 +18,7 @@ export const Home = () => {
             lastValue: postsState.lastValue,
             lastID: postsState.lastID,
             tags: new URLSearchParams(location.search).get("tags"),
-            sorting: "commentCount:desc", //new URLSearchParams(location.search).get("sorting"),
+            sorting: new URLSearchParams(location.search).get("sorting"),
           },
         })
         .then(({ data }) => {
@@ -74,6 +75,28 @@ export const Home = () => {
       <NavBar />
       <ContentContainer onScroll={handleScroll}>
         <Header title="Home">
+          <select
+            value={
+              new URLSearchParams(location.search).get("sorting") || "date:desc"
+            }
+            onChange={(e) => {
+              history.push({
+                pathname: "/",
+                search: "?" + new URLSearchParams({ sorting: e.target.value }),
+              });
+              history.go(0);
+            }}
+            style={{ backgroundColor: "black" }}
+          >
+            <option value="date:asc">Date ascending</option>
+            <option value="date:desc">Date descending</option>
+            <option value="rating:asc">Rating ascending</option>
+            <option value="rating:desc">Rating descending</option>
+            <option value="views:asc">Views ascending</option>
+            <option value="views:desc">Views descending</option>
+            <option value="commentCount:asc">Comments ascending</option>
+            <option value="commentCount:desc">Comments descending</option>
+          </select>
           <SearchBar type="question" />
         </Header>
         {postsState.posts.map((post) => (
