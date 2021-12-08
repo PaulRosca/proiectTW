@@ -16,17 +16,17 @@ export const Profile = () => {
   const user = useSelector((state) => state.user);
   const history = useHistory();
   const { id } = useParams();
-  const [userProfile, setUserProfile] = useState({})
+  const [userProfile, setUserProfile] = useState({});
   const getUserData = (e) => {
     axios
       .get(`http://localhost:9000/user/${id}`)
       .then(({ data }) => {
         setUserProfile(data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
-      }) 
-  }
+      });
+  };
 
   const handleScroll = (e) => {
     const bottom =
@@ -38,11 +38,12 @@ export const Profile = () => {
     }
   };
   const getUserPosts = () => {
-    if (postsState.lastPostID !== "same") {
+    if (postsState.lastValue !== "same" && postsState.lastID !== "same") {
       axios
         .get(`http://localhost:9000/posts/getPosts`, {
           params: {
             lastValue: postsState.lastValue,
+            lastID: postsState.lastID,
             createdBy: id,
           },
         })
@@ -52,6 +53,7 @@ export const Profile = () => {
               ...state,
               posts: [...state.posts, ...data.posts],
               lastValue: data.lastValue,
+              lastID: data.lastID,
               error: false,
               loading: false,
             };
@@ -73,6 +75,7 @@ export const Profile = () => {
     loading: false,
     error: false,
     lastValue: undefined,
+    lastID: undefined,
     hasMore: true,
   });
   useEffect(() => {
@@ -90,20 +93,22 @@ export const Profile = () => {
       <NavBar />
       <ContentContainer onScroll={handleScroll}>
         <Header title="Profile">
-          {user && user._id === id && <SignOutButton
-            onClick={(e) => {
-              localStorage.removeItem("user");
-              dispatch(logout());
-              history.push(`/`);
-              axios
-                .get("http://localhost:9000/user/logout", {
-                  withCredentials: true,
-                })
-                .then((res) => {});
-            }}
-          >
-            Log out
-          </SignOutButton>}
+          {user && user._id === id && (
+            <SignOutButton
+              onClick={(e) => {
+                localStorage.removeItem("user");
+                dispatch(logout());
+                history.push(`/`);
+                axios
+                  .get("http://localhost:9000/user/logout", {
+                    withCredentials: true,
+                  })
+                  .then((res) => {});
+              }}
+            >
+              Log out
+            </SignOutButton>
+          )}
         </Header>
         <ProfileCard user={userProfile} />
         <AskedBy user={userProfile} postsState={postsState}></AskedBy>

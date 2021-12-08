@@ -39,28 +39,40 @@ export const Login = () => {
     <Container>
       <NavBar />
       <ContentContainer>
-      <Header title="Login" />
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="off"
-        > 
-            <FormGroup
-              type="email"
-              id="email-field"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              label="Email"
-            />
-            <FormGroup
-              type="password"
-              class="form-control"
-              id="password-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              label="Password"
-            />
-            <ActionButton type="submit">Login</ActionButton>
-            <div style={{margin:".5rem 2rem", "fontSize": ".875rem", "fontWeight": "300", color: "#AAAAAA", "padding": "0 .5rem"}}>Don't have an account? <Link to="/signup" style={{color: "#AAAAAA"}}>Register</Link></div>
+        <Header title="Login" />
+        <form onSubmit={handleSubmit} autoComplete="off">
+          <FormGroup
+            type="email"
+            id="email-field"
+            value={email}
+            autoComplete="off"
+            onChange={(e) => setEmail(e.target.value)}
+            label="Email"
+          />
+          <FormGroup
+            type="password"
+            class="form-control"
+            id="password-field"
+            value={password}
+            autoComplete="off"
+            onChange={(e) => setPassword(e.target.value)}
+            label="Password"
+          />
+          <ActionButton type="submit">Login</ActionButton>
+          <div
+            style={{
+              margin: ".5rem 2rem",
+              fontSize: ".875rem",
+              fontWeight: "300",
+              color: "#AAAAAA",
+              padding: "0 .5rem",
+            }}
+          >
+            Don't have an account?{" "}
+            <Link to="/signup" style={{ color: "#AAAAAA" }}>
+              Register
+            </Link>
+          </div>
         </form>
       </ContentContainer>
     </Container>
