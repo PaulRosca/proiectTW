@@ -323,8 +323,11 @@ export const getPosts = async (req, res) => {
         filter = postID ? { _id: { $lt: postID } } : {};
         break;
     }
-    if (createdBy) filter["createdBy"] = { $in: createdBy };
-    if (tags) filter["tags"] = { $in: tags.split(",") };
+    if (createdBy) filter["createdBy._id"] = mongoose.Types.ObjectId(createdBy);
+    if (tags)
+      filter["tags._id"] = {
+        $in: tags.split(",").map((id) => mongoose.Types.ObjectId(id)),
+      };
     const posts = await Post.collection
       .aggregate([
         {
@@ -333,9 +336,6 @@ export const getPosts = async (req, res) => {
               $subtract: ["$likeCount", "$dislikeCount"],
             },
           },
-        },
-        {
-          $match: filter,
         },
         {
           $lookup: {
@@ -354,7 +354,9 @@ export const getPosts = async (req, res) => {
             as: "tags",
           },
         },
-
+        {
+          $match: filter,
+        },
         {
           $sort: sort,
         },
@@ -367,7 +369,6 @@ export const getPosts = async (req, res) => {
             "createdBy.__v": 0,
             "createdBy.updatedAt": 0,
             "createdBy.createdAt": 0,
-            "tags._id": 0,
             "tags.questionsCount": 0,
             "tags.__v": 0,
           },
