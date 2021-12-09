@@ -32,6 +32,16 @@ export const Title = styled.p`
     flex: 1;
 `;
 
+export const TitleEdit = styled.input`
+    font-size: 1rem;
+    font-weight: 500;
+    margin-right: 1rem;
+    flex: 1;
+    background-color: transparent;
+    border: 1px solid rgb(118,118,118);
+    border-radius: 4px;
+`;
+
 export const PostDetails = styled.div`
     display: flex;
     flex-direction: column;
@@ -44,17 +54,31 @@ export const PostDetails = styled.div`
 
 export const FullContent = styled.div`
     color: #AAAAAA;
-    word-break: break-all;
     font-size: .875rem;
 `;
 
-export const DeletePost = styled.div`
-    position: absolute;
-    bottom: .5rem;
-    left: 1rem;
-    font-size: .625rem;
+export const FullContentEdit = styled.textarea`
     color: #AAAAAA;
+    font-size: .875rem;
+    background-color: transparent;
+    border: 1px solid rgb(118,118,118);
+    border-radius: 4px;
+    margin-top: .2rem; 
+    max-width: 100%;
+`;
+
+export const OwnerDiv = styled.div`
+    font-size: .625rem;
+    display: flex;
+    gap: 1rem;
+    margin-top: .2rem;
+`;
+
+export const OwnerItem = styled.p`
+    color: #AAAAAA;
+    transition: all .5s;
     &:hover{
         cursor: pointer;
+        color: #ffffff;
     }
 `;

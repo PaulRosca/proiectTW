@@ -47,3 +47,9 @@ export const Hint = styled.p`
   color: #aaaaaa;
   font-size: .8rem;
 `;
+
+export const Edited = styled.p`
+  font-size: .625rem;
+  color: #aaaaaa;
+  font-style: italic;
+`;

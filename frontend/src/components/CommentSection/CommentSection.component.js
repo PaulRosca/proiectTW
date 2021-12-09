@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Comment } from "../Comment/Comment.component";
 import { Container, Title } from "../CommentSection/CommentSection.styled";
 

@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const AskQuestionFormContainer = styled.div`
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 50rem;
+    min-width: 20rem;
+`;
 export const TitleInput = styled.input`
     color: #aaaaaa;
     background-color: black;
@@ -31,7 +38,6 @@ export const AddTagDiv = styled.div`
     border: 1px solid;
     border-color: rgb(118, 118, 118);
     border-radius: 4px;
-    margin: .5rem 0 0 0;
     margin-right: 1rem;
     
 `;
@@ -50,9 +56,8 @@ export const AddTagInput = styled.input`
 export const AddTagContainer = styled.div`
     display: flex;
     align-items: center;
-    max-width: 50rem;
+    max-width: 100%;
     min-width: 20rem;
-    width: 50rem;
 `;
 
 export const AddedTagContainer = styled.div`

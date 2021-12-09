@@ -1,5 +1,4 @@
 import {
-  ContainerPd2,
   Hint,
   LabelBg,
   PostButton,
@@ -14,6 +13,7 @@ import {
   TagSuggestionsContainer,
   TagSuggestion,
   TagNotFound,
+  AskQuestionFormContainer
 } from "./AskQuestionForm.styled";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
@@ -98,7 +98,7 @@ export const AskQuestionForm = () => {
   }, [currentTag.content]);
 
   return (
-    <ContainerPd2>
+    <AskQuestionFormContainer>
       <LabelBg>Title</LabelBg>
       <Hint>Keep it as short and clear as possible</Hint>
       <TitleInput
@@ -186,6 +186,6 @@ export const AskQuestionForm = () => {
       >
         Post
       </PostButton>
-    </ContainerPd2>
+    </AskQuestionFormContainer>
   );
 };

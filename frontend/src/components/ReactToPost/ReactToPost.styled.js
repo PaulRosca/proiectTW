@@ -10,5 +10,4 @@ export const ContainerComment = styled.div`
     display: flex;
     width: 8rem;
     align-items: center;
-    padding: 0 1rem;
 `;
