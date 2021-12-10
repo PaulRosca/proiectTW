@@ -24,8 +24,7 @@ const DetailedTag = ({ tag }) => {
     <DetailedTagGridItem onClick={handleClick}>
       <Tag name={content} />
       <QuestionsP>
-        {questionsCount}
-        {getCorrectFormOfNounBasedOnValue("question", questionsCount)}
+        {questionsCount} {getCorrectFormOfNounBasedOnValue("question", questionsCount)}
       </QuestionsP>
     </DetailedTagGridItem>
   );

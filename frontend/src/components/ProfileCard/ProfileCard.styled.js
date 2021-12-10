@@ -9,3 +9,18 @@ export const Username = styled.p`
     font-size: 1rem;
     color: #AAAAAA;
 `;
+
+export const ProfilePictureDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const ProfilePictureInput = styled.input`
+    display: none;
+`;
+
+export const ProfilePictureLabel = styled.label`
+    &:hover{
+        cursor: pointer;
+    }
+`;
