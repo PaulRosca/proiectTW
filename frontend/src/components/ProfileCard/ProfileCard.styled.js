@@ -11,8 +11,6 @@ export const Username = styled.p`
 `;
 
 export const ProfilePictureDiv = styled.div`
-    display: flex;
-    flex-direction: column;
 `;
 
 export const ProfilePictureInput = styled.input`
@@ -20,7 +18,27 @@ export const ProfilePictureInput = styled.input`
 `;
 
 export const ProfilePictureLabel = styled.label`
+    display: flex;
     &:hover{
         cursor: pointer;
     }
+`;
+
+export const ProfilePictureInputDiv = styled.div`
+    display: flex;
+    gap: .2rem;
+    font-size: .625rem;
+    align-items: center;
+`;
+
+export const UploadPhotoButton = styled.button`
+    background-color: #3A8663;
+    border: none;
+    border-radius: 4px;
+    font-size: .875rem;
+    padding: .2rem .4rem;
+    &:hover{
+        cursor: pointer;
+    }
+
 `;
