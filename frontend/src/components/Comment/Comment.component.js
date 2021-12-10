@@ -45,15 +45,13 @@ export const Comment = ({ comment, onLike, onDislike, onDelete }) => {
       setIsEditing(false);
     }
   };
-
-  const [isEdited, setIsEdited] = useState(() => comment.updatedAt !== comment.createdAt);
-  console.log(comment)
+  const [isEdited, setIsEdited] = useState(comment.edited);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   return (
     <Container>
       <ContentContainer>
-      {/* {isEdited &&  <Edited>edited</Edited>} */}
+      {isEdited &&  <Edited>edited</Edited>}
         { !isEditing  && <Content>{content}</Content>}
         { isEditing && <ContentEdit value={editedContent} onChange={(e) => setEditedContent(e.target.value)}></ContentEdit>}
         <ReactToPost

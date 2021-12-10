@@ -71,23 +71,46 @@ export const Profile = () => {
     }
   };
   const [postsState, setPostsState] = useState({
-    posts: [],
     loading: false,
     error: false,
     lastValue: undefined,
     lastID: undefined,
-    hasMore: true,
+    hasMore: true
   });
+
   useEffect(() => {
+    console.log(`mounted`)
     setPostsState((state) => {
-      return {
+      return{
         ...state,
-        loading: true,
-      };
+        loading: true
+      }
     });
-    getUserData();
-    getUserPosts();
   }, []);
+
+  useEffect(() => {
+    console.log(`id changed`);
+    setPostsState((state) => {
+      return{
+      ...state,
+      loading: true,
+      error: false,
+      lastValue: undefined,
+      lastID: undefined,
+      hasMore: true,
+      posts: []
+    }
+    })
+    getUserData();
+  }, [id]);
+
+  useEffect(() => {
+    if (postsState.posts && postsState.posts.length === 0 && postsState.hasMore){
+      console.log(`getting`);
+      getUserPosts();
+    }
+  }, [postsState]);
+
   return (
     <Container>
       <NavBar />
@@ -110,8 +133,12 @@ export const Profile = () => {
             </SignOutButton>
           )}
         </Header>
+        
         <ProfileCard user={userProfile} />
-        <AskedBy user={userProfile} postsState={postsState}></AskedBy>
+        {postsState.posts && postsState.posts && 
+        <AskedBy user={userProfile} postsState={postsState}></AskedBy>}
+        
+        
       </ContentContainer>
     </Container>
   );

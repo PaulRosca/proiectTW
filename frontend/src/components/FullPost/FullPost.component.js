@@ -39,7 +39,7 @@ export const FullPost = ({ post, onLike, onDislike }) => {
     likeCount,
     dislikeCount,
     createdAt,
-    updatedAt,
+    edited,
     liked,
     disliked,
   } = post;
@@ -152,11 +152,11 @@ export const FullPost = ({ post, onLike, onDislike }) => {
       setIsEditing(false);
     }
   }
-  const [isEdited, setIsEdited] = useState(() => updatedAt !== createdAt);
+  const [isEdited, setIsEdited] = useState(edited);
   return (
     <PostContainer>
       <PostContent>
-        {/* {isEdited && <Edited>edited</Edited>} */}
+        {isEdited && <Edited>edited</Edited>}
         <PostHeader>
           {!isEditing && <Title>{title}</Title>}
           {isEditing && <TitleEdit type="text" value={editedPost.title} onChange={(e) => setEditedPost((prev) => ({...prev, 'title': e.target.value}))}></TitleEdit>}
