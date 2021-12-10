@@ -15,10 +15,10 @@ const PostSchema = mongoose.Schema(
     tags: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Tag",
-      validate: (v) =>
-        Array.isArray(v) && v.length > 0,
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
     commentCount: { type: Number, default: 0 },
+    edited: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

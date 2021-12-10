@@ -9,9 +9,9 @@ import { useLocation, useHistory } from "react-router-dom";
 export const Home = () => {
   const location = useLocation();
   const history = useHistory();
+
   const getPosts = () => {
     if (postsState.lastValue !== "same" && postsState.lastID !== "same") {
-      console.log(postsState);
       axios
         .get(`http://localhost:9000/posts/getPosts`, {
           params: {
@@ -19,6 +19,7 @@ export const Home = () => {
             lastID: postsState.lastID,
             tags: new URLSearchParams(location.search).get("tags"),
             sorting: new URLSearchParams(location.search).get("sorting"),
+            search: new URLSearchParams(location.search).get("search"),
           },
         })
         .then(({ data }) => {
@@ -45,6 +46,38 @@ export const Home = () => {
     }
   };
 
+  const reloadPosts = () => {
+    axios
+      .get(`http://localhost:9000/posts/getPosts`, {
+        params: {
+          tags: new URLSearchParams(location.search).get("tags"),
+          sorting: new URLSearchParams(location.search).get("sorting"),
+          search: new URLSearchParams(location.search).get("search"),
+        },
+      })
+      .then(({ data }) => {
+        setPostsState((state) => {
+          return {
+            ...state,
+            posts: [...data.posts],
+            lastValue: data.lastValue,
+            lastID: data.lastID,
+            error: false,
+            loading: false,
+          };
+        });
+      })
+      .catch((e) => {
+        setPostsState((state) => {
+          return {
+            ...state,
+            error: true,
+            loading: false,
+          };
+        });
+      });
+  };
+
   const handleScroll = (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -52,15 +85,15 @@ export const Home = () => {
       getPosts();
     }
   };
-
-  const [postsState, setPostsState] = useState({
+  const initialPostsState = {
     posts: [],
     loading: false,
     error: false,
     lastValue: undefined,
     lastID: undefined,
     hasMore: true,
-  });
+  };
+  const [postsState, setPostsState] = useState(initialPostsState);
   useEffect(() => {
     setPostsState((state) => {
       return {
@@ -70,6 +103,25 @@ export const Home = () => {
     });
     getPosts();
   }, []);
+  useEffect(() => {
+    reloadPosts();
+  }, [location.search]);
+  const search = (query) => {
+    console.log(location.search);
+    const tags = new URLSearchParams(location.search).get("tags");
+    const sorting = new URLSearchParams(location.search).get("sorting");
+    let paramObj = { search: query };
+    if (tags) {
+      paramObj.tags = tags;
+    }
+    if (sorting) {
+      paramObj.sorting = sorting;
+    }
+    history.push({
+      pathname: "/",
+      search: "?" + new URLSearchParams(paramObj),
+    });
+  };
   return (
     <Container>
       <NavBar />
@@ -80,11 +132,24 @@ export const Home = () => {
               new URLSearchParams(location.search).get("sorting") || "date:desc"
             }
             onChange={(e) => {
+              const tagsParam = new URLSearchParams(location.search).get(
+                "tags"
+              );
+              let newParams;
+              if (tagsParam) {
+                newParams = new URLSearchParams({
+                  tags: tagsParam,
+                  sorting: e.target.value,
+                });
+              } else {
+                newParams = new URLSearchParams({
+                  sorting: e.target.value,
+                });
+              }
               history.push({
                 pathname: "/",
-                search: "?" + new URLSearchParams({ sorting: e.target.value }),
+                search: "?" + newParams,
               });
-              history.go(0);
             }}
             style={{ backgroundColor: "black" }}
           >
@@ -97,7 +162,7 @@ export const Home = () => {
             <option value="commentCount:asc">Comments ascending</option>
             <option value="commentCount:desc">Comments descending</option>
           </select>
-          <SearchBar type="question" />
+          <SearchBar type="question" search={search} />
         </Header>
         {postsState.posts.map((post) => (
           <PostThumbnail post={post} key={post._id}></PostThumbnail>

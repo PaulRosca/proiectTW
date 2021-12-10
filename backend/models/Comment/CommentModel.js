@@ -7,6 +7,7 @@ const CommentSchema = mongoose.Schema(
     post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
     likeCount: { type: Number, default: 0 },
     dislikeCount: { type: Number, default: 0 },
+    edited: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

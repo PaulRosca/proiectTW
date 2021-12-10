@@ -8,7 +8,7 @@ import CommentDislike from "../models/Comment/CommentDislikeModel.js";
 import mongoose from "mongoose";
 const postsPageSize = 6;
 const commentsPageSize = 6;
-const tagsPageSize = 4;
+const tagsPageSize = 25;
 
 export const createTag = async (req, res) => {
   try {
@@ -97,14 +97,21 @@ export const editPost = async (req, res) => {
     if (!post.createdBy.equals(req.user.id)) {
       return res.status(403).json({ message: "Post doesn't belong to user!" });
     }
+    let different = false;
     if (title) {
       post.title = title;
+      different = true;
     }
     if (content) {
       post.content = content;
+      different = true;
     }
     if (tags) {
       post.tags = tags;
+      different = true;
+    }
+    if (different) {
+      post.edited = true;
     }
     post.save();
     return res.status(200).json({ message: "Successfully updated post", post });
@@ -210,6 +217,7 @@ export const getComments = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   let { sorting, lastValue, createdBy, tags, lastID } = req.query;
+
   try {
     let sort;
     let filter;
@@ -328,53 +336,66 @@ export const getPosts = async (req, res) => {
       filter["tags._id"] = {
         $in: tags.split(",").map((id) => mongoose.Types.ObjectId(id)),
       };
-    const posts = await Post.collection
-      .aggregate([
+    let pipeline = [
+      {
+        $addFields: {
+          rating: {
+            $subtract: ["$likeCount", "$dislikeCount"],
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "createdBy",
+        },
+      },
+      { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: "tags",
+          localField: "tags",
+          foreignField: "_id",
+          as: "tags",
+        },
+      },
+      {
+        $match: filter,
+      },
+      {
+        $sort: sort,
+      },
+      { $limit: postsPageSize },
+      {
+        $project: {
+          "createdBy.password": 0,
+          "createdBy.email": 0,
+          "createdBy.profilePicture": 0,
+          "createdBy.__v": 0,
+          "createdBy.updatedAt": 0,
+          "createdBy.createdAt": 0,
+          "tags.questionsCount": 0,
+          "tags.__v": 0,
+        },
+      },
+    ];
+    const query = req.query.search;
+    if (query && query.length > 1) {
+      pipeline = [
         {
-          $addFields: {
-            rating: {
-              $subtract: ["$likeCount", "$dislikeCount"],
+          $search: {
+            index: "default",
+            autocomplete: {
+              query,
+              path: "title",
             },
           },
         },
-        {
-          $lookup: {
-            from: "users",
-            localField: "createdBy",
-            foreignField: "_id",
-            as: "createdBy",
-          },
-        },
-        { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
-        {
-          $lookup: {
-            from: "tags",
-            localField: "tags",
-            foreignField: "_id",
-            as: "tags",
-          },
-        },
-        {
-          $match: filter,
-        },
-        {
-          $sort: sort,
-        },
-        { $limit: postsPageSize },
-        {
-          $project: {
-            "createdBy.password": 0,
-            "createdBy.email": 0,
-            "createdBy.profilePicture": 0,
-            "createdBy.__v": 0,
-            "createdBy.updatedAt": 0,
-            "createdBy.createdAt": 0,
-            "tags.questionsCount": 0,
-            "tags.__v": 0,
-          },
-        },
-      ])
-      .toArray();
+      ].concat(pipeline);
+    }
+    const posts = await Post.collection.aggregate(pipeline).toArray();
 
     lastValue = undefined;
     lastID = undefined;
@@ -551,6 +572,7 @@ export const editComment = async (req, res) => {
         .json({ message: "Comment doesn't belong to user!" });
     }
     comment.content = content;
+    comment.edited = true;
     comment.save();
     return res
       .status(200)
