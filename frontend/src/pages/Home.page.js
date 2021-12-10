@@ -6,6 +6,7 @@ import { PostThumbnail } from "../components/PostThumbnail/PostThumbnail.compone
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useHistory } from "react-router-dom";
+import { Filter } from "../components/Filter/Filter.component";
 export const Home = () => {
   const location = useLocation();
   const history = useHistory();
@@ -127,43 +128,10 @@ export const Home = () => {
       <NavBar />
       <ContentContainer onScroll={handleScroll}>
         <Header title="Home">
-          <select
-            value={
-              new URLSearchParams(location.search).get("sorting") || "date:desc"
-            }
-            onChange={(e) => {
-              const tagsParam = new URLSearchParams(location.search).get(
-                "tags"
-              );
-              let newParams;
-              if (tagsParam) {
-                newParams = new URLSearchParams({
-                  tags: tagsParam,
-                  sorting: e.target.value,
-                });
-              } else {
-                newParams = new URLSearchParams({
-                  sorting: e.target.value,
-                });
-              }
-              history.push({
-                pathname: "/",
-                search: "?" + newParams,
-              });
-            }}
-            style={{ backgroundColor: "black" }}
-          >
-            <option value="date:asc">Date ascending</option>
-            <option value="date:desc">Date descending</option>
-            <option value="rating:asc">Rating ascending</option>
-            <option value="rating:desc">Rating descending</option>
-            <option value="views:asc">Views ascending</option>
-            <option value="views:desc">Views descending</option>
-            <option value="commentCount:asc">Comments ascending</option>
-            <option value="commentCount:desc">Comments descending</option>
-          </select>
+          
           <SearchBar type="question" search={search} />
         </Header>
+        <Filter />
         {postsState.posts.map((post) => (
           <PostThumbnail post={post} key={post._id}></PostThumbnail>
         ))}
